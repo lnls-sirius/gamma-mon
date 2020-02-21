@@ -1,61 +1,72 @@
+
 import React from 'react';
-import {Bar} from 'react-chartjs-2';
-import {color} from '../utils/Colors';
 import Epics from '../utils/Epics';
 
-const pressure = [
-  'BO-01U:VA-CCG-BG:Pressure-Mon',
-  'BO-04U:VA-CCG-BG:Pressure-Mon',
-  'BO-05D:VA-CCG-RFC:Pressure-Mon',
-  'BO-06U:VA-CCG-ED:Pressure-Mon',
-  'BO-09U:VA-CCG-BG:Pressure-Mon',
-  'BO-11U:VA-CCG-ED:Pressure-Mon',
-  'BO-14U:VA-CCG-BG:Pressure-Mon',
-  'BO-16U:VA-CCG-ED:Pressure-Mon',
-  'BO-19U:VA-CCG-BG:Pressure-Mon',
-  'BO-21U:VA-CCG-ED:Pressure-Mon',
-  'BO-24U:VA-CCG-BG:Pressure-Mon',
-  'BO-26U:VA-CCG-ED:Pressure-Mon',
-  'BO-29U:VA-CCG-BG:Pressure-Mon',
-  'BO-31U:VA-CCG-ED:Pressure-Mon',
-  'BO-34U:VA-CCG-BG:Pressure-Mon',
-  'BO-36U:VA-CCG-ED:Pressure-Mon',
-  'BO-39U:VA-CCG-BG:Pressure-Mon',
-  'BO-41U:VA-CCG-ED:Pressure-Mon',
-  'BO-44U:VA-CCG-BG:Pressure-Mon',
-  'BO-46U:VA-CCG-ED:Pressure-Mon',
-  'BO-47U:VA-CCG-ED:Pressure-Mon',
-  'BO-49U:VA-CCG-BG:Pressure-Mon'];
+import { Bar } from 'react-chartjs-2';
+import { color } from '../utils/Colors';
 
-class  PressureBar extends React.Component{
-  constructor(props){
+
+class PressureBar extends React.Component {
+  constructor(props) {
     super(props);
     this.state = {
-      title: "Pressure Monitor"
+      title: "Pressure Monitor",
+      tooltipText: "",
+      tooltipVisible: false
     };
     this.timer = null;
     this.refreshInterval = 100;
-    this.epics = new Epics(pressure);
-    this.minor = pressure.map(()=>1e-6);
-    this.major = pressure.map(()=>1e-8);
+    this.epics = new Epics(this.props.pvs);
+
+    this.minorVal = 1e-8;
+    this.majorVal = 1e-6;
+
+    this.minor = this.props.pvs.map(() => this.minorVal);
+    this.major = this.props.pvs.map(() => this.majorVal);
+
     this.values = [];
+    this.alarms = { bg: [], border: [] };
+
   }
 
-  updatePVValues = ()=>{
-    this.values = pressure.map(pv =>{
-        return this.epics.pvData[pv].value;
+  updatePVValues = () => {
+    this.values = this.props.pvs.map(pv => {
+      return this.epics.pvData[pv].value;
+    });
+
+    this.alarms.bg = this.values.map(value => {
+      if (value) {
+        if (value < this.minorVal) {
+          return color.OK_BG;
+        } else if (value >= this.minorVal && value < this.majorVal) {
+          return color.MINOR_BG;
+        } else {
+          return color.MAJOR_BG;
+        }
+      }
+    });
+
+    this.alarms.border = this.values.map(value => {
+      if (value) {
+        if (value < this.minorVal) {
+          return color.OK_LINE;
+        } else if (value >= this.minorVal && value < this.majorVal)
+          return color.MINOR_LINE;
+      } else {
+        return color.MAJOR_LINE;
+      }
     });
   }
 
-  updateContent = ()=>{
+  updateContent = () => {
     this.updatePVValues();
     let data = {
-      labels: pressure,
+      labels: this.props.pvs,
       datasets: [
         {
           label: 'MKS - Cold Cathode',
-          backgroundColor: color.OK_BG,
-          borderColor: color.OK_LINE,
+          backgroundColor: this.alarms.bg,
+          borderColor: this.alarms.border,
           borderWidth: 1,
           hoverBackgroundColor: color.OK_BG,
           hoverBorderColor: color.HOVER_LINE,
@@ -68,9 +79,7 @@ class  PressureBar extends React.Component{
           backgroundColor: color.MINOR_BG,
           borderColor: color.MINOR_LINE,
           borderWidth: 1,
-          // hoverBackgroundColor: 'rgba(255,99,132,0.4)',
-          // hoverBorderColor: 'rgba(255,99,132,1)',
-          data: this.minor 
+          data: this.minor
         },
         {
           label: 'Major Alarm',
@@ -79,68 +88,89 @@ class  PressureBar extends React.Component{
           backgroundColor: color.MAJOR_BG,
           borderColor: color.MAJOR_LINE,
           borderWidth: 1,
-          // hoverBackgroundColor: 'rgba(255,99,132,0.4)',
-          // hoverBorderColor: 'rgba(255,99,132,1)',
           data: this.major
         }
       ]
     };
 
-    this.setState({chartData:data});
+    this.setState({ chartData: data });
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.timer = setInterval(
       this.updateContent,
       this.refreshInterval
     );
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     clearInterval(this.setInterval);
   }
 
-  renderBar(){
+  customTooltip = (tooltipModel) => {
+
+    if (tooltipModel.opacity === 0) {
+      this.setState({ tooltipVisible: false });
+      return;
+    }
+
+    // set values
+    const x = tooltipModel.dataPoints[0].xLabel;
+    const y = tooltipModel.dataPoints[0].yLabel;
+
+    this.setState({ tooltipVisible: true, tooltipX: x, tooltipY: y });
+  }
+
+  renderBar() {
     return (
-        <Bar
-          data={this.state.chartData}
-          width={750}
-          height={700}
-          options={{
-            // maintainAspectRatio: false,
-            responsive: true,
-            legend:{
-              position: 'bottom',
-              align: 'center'
-            },
-            // title:{
-            //   display: true,
-            //   text: 'Pressure Monitor'
-            // },
-            scales: {
-              yAxes: [{
-                ticks: {
-                  min: 1e-12,
-                  max: 1e-6
-                  // beginAtZero: true
-                },
-                display: true,
-                type: 'logarithmic',
-                // min: 0,
-                // max: 1e-1
-                // suggestedMin: 1e-12,
-                // suggestedMax: 1e-6
-              }]
-            }
-          }}
-        />)
+      <Bar
+        data={this.state.chartData}
+        width={950}
+        height={600}
+        options={{
+          tooltips: {
+            mode: 'index',
+            enabled: false,
+            custom: this.customTooltip
+          },
+          maintainAspectRatio: false,
+          responsive: true,
+          legend: {
+            position: 'bottom',
+            align: 'center'
+          },
+          scales: {
+            yAxes: [{
+              ticks: {
+                min: 1e-12,
+                max: 1e-6
+              },
+              display: true,
+              type: 'logarithmic',
+            }]
+          }
+        }}
+      />)
   }
 
   render() {
     return (
       <div>
         <h2> {this.state.title} </h2>
-        {this.state.chartData?this.renderBar():'loading...'}
+        <table align='center'>
+          <tbody>
+          {this.state.tooltipVisible ? (
+            <tr>
+              <td>{this.state.tooltipX}</td>
+              <td>{this.state.tooltipY}</td>
+            </tr>
+          ) : (<tr>
+            <td>-</td>
+            <td>-</td>
+          </tr>)}
+          </tbody>
+        </table>
+        {this.state.chartData ? <div> {this.renderBar()} </div>: 'loading...'}
       </div>
     );
   }
