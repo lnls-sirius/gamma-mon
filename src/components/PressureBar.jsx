@@ -3,9 +3,29 @@ import {Bar} from 'react-chartjs-2';
 import {color} from '../utils/Colors';
 import Epics from '../utils/Epics';
 
-function getRandomInt() {
-  return Math.random() * 10e-8;
-}
+const pressure = [
+  'BO-01U:VA-CCG-BG:Pressure-Mon',
+  'BO-04U:VA-CCG-BG:Pressure-Mon',
+  'BO-05D:VA-CCG-RFC:Pressure-Mon',
+  'BO-06U:VA-CCG-ED:Pressure-Mon',
+  'BO-09U:VA-CCG-BG:Pressure-Mon',
+  'BO-11U:VA-CCG-ED:Pressure-Mon',
+  'BO-14U:VA-CCG-BG:Pressure-Mon',
+  'BO-16U:VA-CCG-ED:Pressure-Mon',
+  'BO-19U:VA-CCG-BG:Pressure-Mon',
+  'BO-21U:VA-CCG-ED:Pressure-Mon',
+  'BO-24U:VA-CCG-BG:Pressure-Mon',
+  'BO-26U:VA-CCG-ED:Pressure-Mon',
+  'BO-29U:VA-CCG-BG:Pressure-Mon',
+  'BO-31U:VA-CCG-ED:Pressure-Mon',
+  'BO-34U:VA-CCG-BG:Pressure-Mon',
+  'BO-36U:VA-CCG-ED:Pressure-Mon',
+  'BO-39U:VA-CCG-BG:Pressure-Mon',
+  'BO-41U:VA-CCG-ED:Pressure-Mon',
+  'BO-44U:VA-CCG-BG:Pressure-Mon',
+  'BO-46U:VA-CCG-ED:Pressure-Mon',
+  'BO-47U:VA-CCG-ED:Pressure-Mon',
+  'BO-49U:VA-CCG-BG:Pressure-Mon'];
 
 class  PressureBar extends React.Component{
   constructor(props){
@@ -14,13 +34,23 @@ class  PressureBar extends React.Component{
       title: "Pressure Monitor"
     };
     this.timer = null;
-    this.refreshInterval = 1000;
-    this.epics = new Epics(['BO-06U:VA-CCG-ED:Pressure-Mon']);
+    this.refreshInterval = 100;
+    this.epics = new Epics(pressure);
+    this.minor = pressure.map(()=>1e-6);
+    this.major = pressure.map(()=>1e-8);
+    this.values = [];
+  }
+
+  updatePVValues = ()=>{
+    this.values = pressure.map(pv =>{
+        return this.epics.pvData[pv].value;
+    });
   }
 
   updateContent = ()=>{
+    this.updatePVValues();
     let data = {
-      labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+      labels: pressure,
       datasets: [
         {
           label: 'MKS - Cold Cathode',
@@ -29,14 +59,7 @@ class  PressureBar extends React.Component{
           borderWidth: 1,
           hoverBackgroundColor: color.OK_BG,
           hoverBorderColor: color.HOVER_LINE,
-          data: [
-            getRandomInt(),
-            getRandomInt(),
-            getRandomInt(),
-            getRandomInt(),
-            getRandomInt(),
-            getRandomInt(),
-            getRandomInt() ]
+          data: this.values
         },
         {
           label: 'Minor Alarm',
@@ -47,15 +70,7 @@ class  PressureBar extends React.Component{
           borderWidth: 1,
           // hoverBackgroundColor: 'rgba(255,99,132,0.4)',
           // hoverBorderColor: 'rgba(255,99,132,1)',
-          data: [
-            1e-8,
-            1e-8,
-            1e-8,
-            1e-8,
-            1e-8,
-            1e-8,
-            1e-8]
-
+          data: this.minor 
         },
         {
           label: 'Major Alarm',
@@ -66,15 +81,7 @@ class  PressureBar extends React.Component{
           borderWidth: 1,
           // hoverBackgroundColor: 'rgba(255,99,132,0.4)',
           // hoverBorderColor: 'rgba(255,99,132,1)',
-          data: [
-            1e-7,
-            1e-7,
-            1e-7,
-            1e-7,
-            1e-7,
-            1e-7,
-            1e-7]
-
+          data: this.major
         }
       ]
     };
@@ -97,11 +104,11 @@ class  PressureBar extends React.Component{
     return (
         <Bar
           data={this.state.chartData}
-          width={650}
-          height={400}
+          width={750}
+          height={700}
           options={{
-            maintainAspectRatio: false,
-            // responsive: true,
+            // maintainAspectRatio: false,
+            responsive: true,
             legend:{
               position: 'bottom',
               align: 'center'
