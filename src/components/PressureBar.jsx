@@ -4,13 +4,16 @@ import Epics from '../utils/Epics';
 
 import { Bar } from 'react-chartjs-2';
 import { color } from '../utils/Colors';
-
+import "./PressureBar.css";
 
 class PressureBar extends React.Component {
+  static defaultProps = {
+    title: "A graph"
+
+  }
   constructor(props) {
     super(props);
     this.state = {
-      title: "Pressure Monitor",
       tooltipText: "",
       tooltipVisible: false
     };
@@ -27,6 +30,10 @@ class PressureBar extends React.Component {
     this.values = [];
     this.alarms = { bg: [], border: [] };
 
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot){
+      /** Check if there's a new PV list */
   }
 
   updatePVValues = () => {
@@ -104,7 +111,8 @@ class PressureBar extends React.Component {
   }
 
   componentWillUnmount() {
-    clearInterval(this.setInterval);
+    clearInterval(this.timer);
+    this.epics.disconnect();
   }
 
   customTooltip = (tooltipModel) => {
@@ -126,7 +134,7 @@ class PressureBar extends React.Component {
       <Bar
         data={this.state.chartData}
         width={950}
-        height={600}
+        height={650}
         options={{
           tooltips: {
             mode: 'index',
@@ -155,8 +163,8 @@ class PressureBar extends React.Component {
 
   render() {
     return (
-      <div>
-        <h2> {this.state.title} </h2>
+      <div className='PressureBar'>
+        {this.props.title} 
         <table align='center'>
           <tbody>
           {this.state.tooltipVisible ? (
@@ -165,12 +173,12 @@ class PressureBar extends React.Component {
               <td>{this.state.tooltipY}</td>
             </tr>
           ) : (<tr>
-            <td>-</td>
-            <td>-</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
           </tr>)}
           </tbody>
         </table>
-        {this.state.chartData ? <div> {this.renderBar()} </div>: 'loading...'}
+        {this.state.chartData ? <article className='GraphContainer'> {this.renderBar()} </article>: 'loading...'}
       </div>
     );
   }

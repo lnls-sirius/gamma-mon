@@ -1,0 +1,10 @@
+.PressureBar{
+    /* flex-grow: 1; */
+    /* background-color: aquamarine; */
+}
+
+.GraphContainer{
+    /* height: 80vh; */
+    padding-left: 25px;
+    padding-right: 50px;
+}

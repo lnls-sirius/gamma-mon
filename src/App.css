@@ -1,14 +1,41 @@
 .App {
+  align-items: center;
+  background-color: #282c34;
+  color: white;
+  /* display: flex; */
+  /* flex-direction: row; */
+  font-size: calc(12px + 2vmin);
+  justify-content: center;
+  min-height: 100vh;
   text-align: center;
+  margin-top: 0;
 }
 
-.App-header {
+button {
+  width: 150px;
+  margin: 2px;
   background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  outline-color: white;
+  transition-duration: 0.4s;
   color: white;
+}
+
+button:hover {
+  background-color: #1F1f1f;
+  color: white;
+}
+
+.Menu{
+  position: relative;
+  padding-top: 25px;
+}
+
+.MainTitle{
+  font-size: 18pt;
+
+}
+
+.SubTitle{
+  font-size: 14pt;
+  font-style: oblique;
 }
