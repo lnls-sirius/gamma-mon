@@ -26,7 +26,7 @@ class App extends React.Component {
   renderNav = () => {
     if (this.state.content != STATE.INITIAL) {
       return <div className='Menu'>
-        <button type="button" class="btn btn-secondary" onClick={() => this.setState({ content: STATE.INITIAL })}>Back</button>
+        <button type="button" onClick={() => this.setState({ content: STATE.INITIAL })}>Back</button>
       </div>
     } else {
       return <div className='Menu'>
