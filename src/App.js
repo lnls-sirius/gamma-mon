@@ -15,7 +15,8 @@ const STATE = {
   TB: 3,
   TS: 4,
   ALL: 5,
-  TB_TS: 6
+  TB_TS: 6,
+  BO_TB_TS: 7
 }
 
 class App extends React.Component {
@@ -50,6 +51,7 @@ class App extends React.Component {
         <button type="button" onClick={() => this.setState({ content: STATE.BO })}>BO</button><br />
         <button type="button" onClick={() => this.setState({ content: STATE.SI })}>SI</button><br />
         <button type="button" onClick={() => this.setState({ content: STATE.TB_TS })}>TB & TS</button><br />
+        <button type="button" onClick={() => this.setState({ content: STATE.BO_TB_TS })}>BO, TB & TS</button><br />
         <button type="button" onClick={() => this.setState({ content: STATE.TB})}>TB</button><br/>
         <button type="button" onClick={() => this.setState({ content: STATE.TS})}>TS</button><br/>
         <button type="button" onClick={() => this.setState({ content: STATE.ALL })}>ALL</button><br />
@@ -87,6 +89,12 @@ class App extends React.Component {
       case STATE.TB_TS:
         return <div style={{'display':'flex', 'flex-direction': 'row', 'flex-wrap': 'wrap'}}>
               <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={tb} title='TB - Pressure' />
+              <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={ts} title='TS - Pressure' />
+          </div>
+      case STATE.BO_TB_TS:
+        return <div style={{'display':'flex', 'flex-direction': 'row', 'flex-wrap': 'wrap'}}>
+              <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={bo} title='BO - Pressure' />
+              <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={ts} title='TS - Pressure' />
               <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={ts} title='TS - Pressure' />
           </div>
       case STATE.ALL:
