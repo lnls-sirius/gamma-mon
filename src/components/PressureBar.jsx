@@ -2,9 +2,12 @@
 import React from 'react';
 import Epics from '../utils/Epics';
 
-import { Bar } from 'react-chartjs-2';
+import { Bar, defaults } from 'react-chartjs-2';
 import { color } from '../utils/Colors';
 import "./PressureBar.css";
+
+defaults.global.defaultFontColor = "#FFF";
+defaults.global.defaultFontSize = 16;
 
 class PressureBar extends React.Component {
   static defaultProps = {
@@ -32,8 +35,8 @@ class PressureBar extends React.Component {
 
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot){
-      /** Check if there's a new PV list */
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    /** Check if there's a new PV list */
   }
 
   updatePVValues = () => {
@@ -42,7 +45,7 @@ class PressureBar extends React.Component {
     });
 
     this.alarms.bg = this.values.map(value => {
-      if (value) {
+      if (value && !isNaN(value)) {
         if (value < this.minorVal) {
           return color.OK_BG;
         } else if (value >= this.minorVal && value < this.majorVal) {
@@ -50,17 +53,21 @@ class PressureBar extends React.Component {
         } else {
           return color.MAJOR_BG;
         }
+      } else {
+        /** I'm returning OK here so because invalid numbers will not be plotted so this will only mess up the legend in case the first PV is invalid */
+        return color.OK_BG; // return color.INVALID_BG;
       }
     });
 
     this.alarms.border = this.values.map(value => {
-      if (value) {
+      if (value && !isNaN(value)) {
         if (value < this.minorVal) {
           return color.OK_LINE;
         } else if (value >= this.minorVal && value < this.majorVal)
           return color.MINOR_LINE;
       } else {
-        return color.MAJOR_LINE;
+        /** Same as the alarm.bg*/
+        return color.OK_LINE; // return color.INVALID_LINE;
       }
     });
   }
@@ -86,7 +93,8 @@ class PressureBar extends React.Component {
           backgroundColor: color.MINOR_BG,
           borderColor: color.MINOR_LINE,
           borderWidth: 1,
-          data: this.minor
+          data: this.minor,
+          pointRadius: 0
         },
         {
           label: 'Major Alarm',
@@ -95,7 +103,8 @@ class PressureBar extends React.Component {
           backgroundColor: color.MAJOR_BG,
           borderColor: color.MAJOR_LINE,
           borderWidth: 1,
-          data: this.major
+          data: this.major,
+          pointRadius: 0
         }
       ]
     };
@@ -115,43 +124,45 @@ class PressureBar extends React.Component {
     this.epics.disconnect();
   }
 
-  customTooltip = (tooltipModel) => {
-
-    if (tooltipModel.opacity === 0) {
-      this.setState({ tooltipVisible: false });
-      return;
-    }
-
-    // set values
-    const x = tooltipModel.dataPoints[0].xLabel;
-    const y = tooltipModel.dataPoints[0].yLabel;
-
-    this.setState({ tooltipVisible: true, tooltipX: x, tooltipY: y });
-  }
-
   renderBar() {
     return (
       <Bar
         data={this.state.chartData}
-        width={950}
-        height={650}
         options={{
           tooltips: {
             mode: 'index',
             enabled: false,
-            custom: this.customTooltip
+            custom: this.props.customTooltipCallback
+            // custom: this.customTooltip
           },
           maintainAspectRatio: false,
           responsive: true,
           legend: {
             position: 'bottom',
-            align: 'center'
+            align: 'center',
+            labels: {}
           },
           scales: {
+            xAxes: [{
+              ticks: {},
+              gridLines: {
+                display: true,
+                color: 'rgba(184,184,184,0.2)',
+                zeroLineColor: 'rgba(184,184,184,0.8)'
+              },
+            }],
             yAxes: [{
+              id: 'pressure',
+              scaleLabel: { display: true, labelString: 'mBar' },
+              gridLines: {
+                display: true,
+                color: 'rgba(184,184,184,0.2)',
+                zeroLineColor: 'rgba(184,184,184,0.8)'
+              },
               ticks: {
                 min: 1e-12,
-                max: 1e-6
+                max: 1e-6,
+                fontSize: 14,
               },
               display: true,
               type: 'logarithmic',
@@ -164,21 +175,8 @@ class PressureBar extends React.Component {
   render() {
     return (
       <div className='PressureBar'>
-        {this.props.title} 
-        <table align='center'>
-          <tbody>
-          {this.state.tooltipVisible ? (
-            <tr>
-              <td>{this.state.tooltipX}</td>
-              <td>{this.state.tooltipY}</td>
-            </tr>
-          ) : (<tr>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-          </tr>)}
-          </tbody>
-        </table>
-        {this.state.chartData ? <article className='GraphContainer'> {this.renderBar()} </article>: 'loading...'}
+        <div className='Title'>{this.props.title}</div>
+        {this.state.chartData ? <article className='GraphContainer'> {this.renderBar()} </article> : 'loading...'}
       </div>
     );
   }
