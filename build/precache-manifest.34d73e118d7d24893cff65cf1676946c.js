@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "c2f857c1da8f40dc93b6797589865403",
+    "revision": "7b8c972d410270075a2e91c9813babc4",
     "url": "/download/vac-pressure-monitor/build/index.html"
   },
   {
-    "revision": "770a0c49fbb5b7fabdb5",
+    "revision": "0b47493ee6d9d93bb7c2",
     "url": "/download/vac-pressure-monitor/build/static/css/main.f21f0175.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/download/vac-pressure-monitor/build/static/js/2.93b2dac6.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "770a0c49fbb5b7fabdb5",
-    "url": "/download/vac-pressure-monitor/build/static/js/main.5eff27c1.chunk.js"
+    "revision": "0b47493ee6d9d93bb7c2",
+    "url": "/download/vac-pressure-monitor/build/static/js/main.22994d75.chunk.js"
   },
   {
     "revision": "614fa5b396fa67745b51",

@@ -140,6 +140,7 @@ class PressureBar extends React.Component {
           legend: {
             position: 'bottom',
             align: 'center',
+            display: false,
             labels: {}
           },
           scales: {
