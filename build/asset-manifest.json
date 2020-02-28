@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/download/vac-pressure-monitor/build/static/css/main.bbe6b87c.chunk.css",
-    "main.js": "/download/vac-pressure-monitor/build/static/js/main.8ec32771.chunk.js",
-    "main.js.map": "/download/vac-pressure-monitor/build/static/js/main.8ec32771.chunk.js.map",
+    "main.css": "/download/vac-pressure-monitor/build/static/css/main.f21f0175.chunk.css",
+    "main.js": "/download/vac-pressure-monitor/build/static/js/main.5eff27c1.chunk.js",
+    "main.js.map": "/download/vac-pressure-monitor/build/static/js/main.5eff27c1.chunk.js.map",
     "runtime-main.js": "/download/vac-pressure-monitor/build/static/js/runtime-main.698dd3fa.js",
     "runtime-main.js.map": "/download/vac-pressure-monitor/build/static/js/runtime-main.698dd3fa.js.map",
-    "static/js/2.9eb22f23.chunk.js": "/download/vac-pressure-monitor/build/static/js/2.9eb22f23.chunk.js",
-    "static/js/2.9eb22f23.chunk.js.map": "/download/vac-pressure-monitor/build/static/js/2.9eb22f23.chunk.js.map",
+    "static/js/2.93b2dac6.chunk.js": "/download/vac-pressure-monitor/build/static/js/2.93b2dac6.chunk.js",
+    "static/js/2.93b2dac6.chunk.js.map": "/download/vac-pressure-monitor/build/static/js/2.93b2dac6.chunk.js.map",
     "index.html": "/download/vac-pressure-monitor/build/index.html",
-    "precache-manifest.239099587f7477f3631c1336d3357e94.js": "/download/vac-pressure-monitor/build/precache-manifest.239099587f7477f3631c1336d3357e94.js",
+    "precache-manifest.8538fcebf418a78c363144300d678e8e.js": "/download/vac-pressure-monitor/build/precache-manifest.8538fcebf418a78c363144300d678e8e.js",
     "service-worker.js": "/download/vac-pressure-monitor/build/service-worker.js",
-    "static/css/main.bbe6b87c.chunk.css.map": "/download/vac-pressure-monitor/build/static/css/main.bbe6b87c.chunk.css.map",
-    "static/js/2.9eb22f23.chunk.js.LICENSE.txt": "/download/vac-pressure-monitor/build/static/js/2.9eb22f23.chunk.js.LICENSE.txt"
+    "static/css/main.f21f0175.chunk.css.map": "/download/vac-pressure-monitor/build/static/css/main.f21f0175.chunk.css.map",
+    "static/js/2.93b2dac6.chunk.js.LICENSE.txt": "/download/vac-pressure-monitor/build/static/js/2.93b2dac6.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.698dd3fa.js",
-    "static/js/2.9eb22f23.chunk.js",
-    "static/css/main.bbe6b87c.chunk.css",
-    "static/js/main.8ec32771.chunk.js"
+    "static/js/2.93b2dac6.chunk.js",
+    "static/css/main.f21f0175.chunk.css",
+    "static/js/main.5eff27c1.chunk.js"
   ]
 }
