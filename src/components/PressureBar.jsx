@@ -3,6 +3,8 @@ import React from 'react';
 import Epics from '../utils/Epics';
 
 import { Bar, defaults } from 'react-chartjs-2';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+
 import { color } from '../utils/Colors';
 import "./PressureBar.css";
 
@@ -84,7 +86,7 @@ class PressureBar extends React.Component {
           borderWidth: 1,
           hoverBackgroundColor: color.OK_BG,
           hoverBorderColor: color.HOVER_LINE,
-          data: this.values
+          data: this.values,
         },
         {
           label: 'Minor Alarm',
@@ -94,7 +96,8 @@ class PressureBar extends React.Component {
           borderColor: color.MINOR_LINE,
           borderWidth: 1,
           data: this.minor,
-          pointRadius: 0
+          pointRadius: 0,
+          datalabels:{ display:  false}
         },
         {
           label: 'Major Alarm',
@@ -104,7 +107,8 @@ class PressureBar extends React.Component {
           borderColor: color.MAJOR_LINE,
           borderWidth: 1,
           data: this.major,
-          pointRadius: 0
+          pointRadius: 0,
+          datalabels:{ display:  false}
         }
       ]
     };
@@ -128,7 +132,17 @@ class PressureBar extends React.Component {
     return (
       <Bar
         data={this.state.chartData}
+        plugins={[ChartDataLabels]}
         options={{
+          plugins:{
+            datalabels:{
+              rotation: 270,
+              font: {
+                weight:"bold"
+              }
+              // formatter: (text)=> { return text+ 'as'; }
+            }
+          },
           tooltips: {
             mode: 'index',
             enabled: false,
