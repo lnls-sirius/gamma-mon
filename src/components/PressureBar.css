@@ -1,7 +1,4 @@
 .PressureBar {
-    /* flex-grow: 1; */
-    /* background-color: aquamarine; */
-    /* resize: both; */
     resize: horizontal;
     overflow: auto;
 }
@@ -10,8 +7,6 @@
     position: relative;
     padding-top: 25px;
     font-size: 16pt;
-    /* flex-grow: 1; */
-    /* background-color: aquamarine; */
 }
 
 .GraphContainer {

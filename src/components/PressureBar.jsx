@@ -26,8 +26,8 @@ class PressureBar extends React.Component {
     this.refreshInterval = 100;
     this.epics = new Epics(this.props.pvs);
 
-    this.minorVal = 1e-8;
-    this.majorVal = 1e-6;
+    this.minorVal = 1e-9;
+    this.majorVal = 1e-8;
 
     this.minor = this.props.pvs.map(() => this.minorVal);
     this.major = this.props.pvs.map(() => this.majorVal);
@@ -176,7 +176,7 @@ class PressureBar extends React.Component {
               },
               ticks: {
                 min: 1e-12,
-                max: 1e-6,
+                max: 1e-7,
                 fontSize: 14,
               },
               display: true,
