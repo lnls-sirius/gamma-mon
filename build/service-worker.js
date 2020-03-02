@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/download/vac-pressure-monitor/build/precache-manifest.66e965274613685951d517193b8d79ea.js"
+  "/download/vac-pressure-monitor/build/precache-manifest.3ee679c97b5a640548f910d55980de20.js"
 );
 
 self.addEventListener('message', (event) => {
