@@ -3,9 +3,10 @@ class Network{
         if(! Network.instance){
             Network.instance = this;
         }
-
+        this.secure = window.location.protocol == 'https:';
         this.epics2webHost = '10.0.38.42';
         this.epics2webLocation = '/epics2web';
+        this.epics2webGet = 'http://' + this.epics2webHost + this.epics2webLocation + '/caget';
         this.epics2webWs = 
             'ws://' + this.epics2webHost + this.epics2webLocation + '/monitor';
         this.epics2webOptions = {

@@ -9,20 +9,6 @@
   margin-top: 0;
 }
 
-button {
-  width: 150px;
-  margin: 2px;
-  background-color: #282c34;
-  outline-color: white;
-  transition-duration: 0.4s;
-  color: white;
-}
-
-button:hover {
-  background-color: #1F1f1f;
-  color: white;
-}
-
 .Menu{
   position: relative;
   padding-top: 25px;

@@ -40,6 +40,7 @@ class Epics {
         if(this.con){
             this.con.autoReconnect = false;
             this.con.close();
+            this.monitoredPVsList = [];
         }
     }
 }

@@ -1,12 +1,13 @@
 
 import React from 'react';
-import Epics from '../utils/Epics';
-
 import { Bar, defaults } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
+import Epics from '../utils/Epics';
 import { color } from '../utils/Colors';
 import "./PressureBar.css";
+
+import SettingsDialog from './SettingsDialog';
 
 defaults.global.defaultFontColor = "#FFF";
 defaults.global.defaultFontSize = 16;
@@ -26,15 +27,20 @@ class PressureBar extends React.Component {
     this.refreshInterval = 100;
     this.epics = new Epics(this.props.pvs);
 
-    this.minorVal = 1e-9;
-    this.majorVal = 1e-8;
-
-    this.minor = this.props.pvs.map(() => this.minorVal);
-    this.major = this.props.pvs.map(() => this.majorVal);
+    this.minorVal = this.props.high ? this.props.high : 1e-8;
+    this.majorVal = this.props.hihi ? this.props.hihi : 1e-7;
+    this.updateAlarms();
+    // this.minor = this.props.pvs.map(() => this.minorVal);
+    // this.major = this.props.pvs.map(() => this.majorVal);
 
     this.values = [];
     this.alarms = { bg: [], border: [] };
 
+  }
+
+  updateAlarms = () => {
+    this.minor = this.props.pvs.map(() => this.minorVal);
+    this.major = this.props.pvs.map(() => this.majorVal);
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -97,7 +103,7 @@ class PressureBar extends React.Component {
           borderWidth: 1,
           data: this.minor,
           pointRadius: 0,
-          datalabels:{ display:  false}
+          datalabels: { display: false }
         },
         {
           label: 'Major Alarm',
@@ -108,7 +114,7 @@ class PressureBar extends React.Component {
           borderWidth: 1,
           data: this.major,
           pointRadius: 0,
-          datalabels:{ display:  false}
+          datalabels: { display: false }
         }
       ]
     };
@@ -134,11 +140,11 @@ class PressureBar extends React.Component {
         data={this.state.chartData}
         plugins={[ChartDataLabels]}
         options={{
-          plugins:{
-            datalabels:{
+          plugins: {
+            datalabels: {
               rotation: 270,
               font: {
-                weight:"bold"
+                weight: "bold"
               }
               // formatter: (text)=> { return text+ 'as'; }
             }
@@ -187,10 +193,22 @@ class PressureBar extends React.Component {
       />)
   }
 
+  handleConfig = (hihi, high) => {
+    this.majorVal = hihi;
+    this.minorVal = high;
+    this.updateAlarms();
+  }
+
   render() {
     return (
       <div className='PressureBar'>
         <div className='Title'>{this.props.title}</div>
+        <SettingsDialog
+          title={this.props.title + " settings"}
+          high={this.minorVal}
+          hihi={this.majorVal}
+          handleConfig={this.handleConfig} />
+
         {this.state.chartData ? <article className='GraphContainer'> {this.renderBar()} </article> : 'loading...'}
       </div>
     );
