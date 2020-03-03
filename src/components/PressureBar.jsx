@@ -26,6 +26,7 @@ class PressureBar extends React.Component {
       minorArray: props.pvs.map(() => props.high ? props.high : 1e-8),
       majorVal: props.hihi ? props.hihi : 1e-7,
       majorArray: props.pvs.map(() => props.hihi ? props.hihi : 1e-7),
+      maxVal: null,
     };
 
     this.timer = null;
@@ -34,6 +35,7 @@ class PressureBar extends React.Component {
 
     this.values = [];
     this.alarms = { bg: [], border: [] };
+    this.max = this.state.majorVal;
 
   }
 
@@ -45,6 +47,7 @@ class PressureBar extends React.Component {
     const { pvs } = this.props;
 
     this.values = pvs.map(pv => { return this.epics.pvData[pv].value; });
+    this.valuesMax = Math.max(...this.values);
 
     this.alarms.bg = this.values.map(value => {
       if (value && !isNaN(value)) {
@@ -77,9 +80,13 @@ class PressureBar extends React.Component {
 
   updateContent = () => {
     this.updatePVValues();
+
     this.setState((state, props) => {
       const { minorVal, majorVal, minorArray, majorArray } = state;
       const { pvs } = props;
+
+      const maxVal = (this.valuesMax > majorVal) ? this.valuesMax : majorVal;
+
       let data = {
         labels: pvs,
         datasets: [
@@ -116,7 +123,7 @@ class PressureBar extends React.Component {
           }
         ]
       };
-      return { chartData: data };
+      return { chartData: data, maxVal: maxVal};
     });
   }
 
@@ -125,7 +132,7 @@ class PressureBar extends React.Component {
   componentWillUnmount() { clearInterval(this.timer); this.epics.disconnect(); }
 
   renderBar() {
-    const { majorVal, minorVal } = this.state;
+    const { majorVal, minorVal, maxVal } = this.state;
     const { customTooltipCallback } = this.props;
     return (
       <Bar
@@ -161,7 +168,7 @@ class PressureBar extends React.Component {
               },
               ticks: {
                 min: 1e-12,
-                max: majorVal,
+                max: maxVal,
                 fontSize: 14,
               },
               display: true,
@@ -190,11 +197,11 @@ class PressureBar extends React.Component {
     return (
       <div className='PressureBar'>
         <div className='Title'>{title}</div>
-          <SettingsDialog
-            title={title + " settings"}
-            high={minorVal}
-            hihi={majorVal}
-            handleConfig={this.handleConfig} />
+        <SettingsDialog
+          title={title + " settings"}
+          high={minorVal}
+          hihi={majorVal}
+          handleConfig={this.handleConfig} />
         {this.state.chartData ? <article className='GraphContainer'> {this.renderBar()} </article> : 'loading...'}
       </div>
     );

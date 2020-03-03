@@ -109,7 +109,7 @@ class App extends React.Component {
           <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={bo} title='BO - Pressure' />
           <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={tb} title='TB - Pressure' />
           <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={ts} title='TS - Pressure' />
-          <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={si} title='SI - Pressure' />
+          <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={si} title='SI - Pressure'  high={1e-9} hihi={1e-8} />
         </div>
 
       default:
