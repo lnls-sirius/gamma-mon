@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/download/vac-pressure-monitor/build/static/css/main.1a09ff77.chunk.css",
-    "main.js": "/download/vac-pressure-monitor/build/static/js/main.fdcdc10e.chunk.js",
-    "main.js.map": "/download/vac-pressure-monitor/build/static/js/main.fdcdc10e.chunk.js.map",
+    "main.css": "/download/vac-pressure-monitor/build/static/css/main.d1f7281b.chunk.css",
+    "main.js": "/download/vac-pressure-monitor/build/static/js/main.5d536ba5.chunk.js",
+    "main.js.map": "/download/vac-pressure-monitor/build/static/js/main.5d536ba5.chunk.js.map",
     "runtime-main.js": "/download/vac-pressure-monitor/build/static/js/runtime-main.698dd3fa.js",
     "runtime-main.js.map": "/download/vac-pressure-monitor/build/static/js/runtime-main.698dd3fa.js.map",
     "static/js/2.db119e2a.chunk.js": "/download/vac-pressure-monitor/build/static/js/2.db119e2a.chunk.js",
     "static/js/2.db119e2a.chunk.js.map": "/download/vac-pressure-monitor/build/static/js/2.db119e2a.chunk.js.map",
     "index.html": "/download/vac-pressure-monitor/build/index.html",
-    "precache-manifest.3ee679c97b5a640548f910d55980de20.js": "/download/vac-pressure-monitor/build/precache-manifest.3ee679c97b5a640548f910d55980de20.js",
+    "precache-manifest.87de1534f0eb7a33478b42c87bbfe87a.js": "/download/vac-pressure-monitor/build/precache-manifest.87de1534f0eb7a33478b42c87bbfe87a.js",
     "service-worker.js": "/download/vac-pressure-monitor/build/service-worker.js",
-    "static/css/main.1a09ff77.chunk.css.map": "/download/vac-pressure-monitor/build/static/css/main.1a09ff77.chunk.css.map",
+    "static/css/main.d1f7281b.chunk.css.map": "/download/vac-pressure-monitor/build/static/css/main.d1f7281b.chunk.css.map",
     "static/js/2.db119e2a.chunk.js.LICENSE.txt": "/download/vac-pressure-monitor/build/static/js/2.db119e2a.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.698dd3fa.js",
     "static/js/2.db119e2a.chunk.js",
-    "static/css/main.1a09ff77.chunk.css",
-    "static/js/main.fdcdc10e.chunk.js"
+    "static/css/main.d1f7281b.chunk.css",
+    "static/js/main.5d536ba5.chunk.js"
   ]
 }
