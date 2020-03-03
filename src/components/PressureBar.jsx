@@ -6,6 +6,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 import Epics from '../utils/Epics';
 import { color } from '../utils/Colors';
 import "./PressureBar.css";
+import { Button } from '@material-ui/core';
 
 import SettingsDialog from './SettingsDialog';
 
@@ -119,43 +120,27 @@ class PressureBar extends React.Component {
     });
   }
 
-  componentDidMount() {
-    this.timer = setInterval(this.updateContent, this.refreshInterval);
-  }
+  componentDidMount() { this.timer = setInterval(this.updateContent, this.refreshInterval); }
 
-  componentWillUnmount() {
-    clearInterval(this.timer);
-    this.epics.disconnect();
-  }
+  componentWillUnmount() { clearInterval(this.timer); this.epics.disconnect(); }
 
   renderBar() {
-    const { majorVal, minorVal} = this.state;
-    const { customTooltipCallback} = this.props;
+    const { majorVal, minorVal } = this.state;
+    const { customTooltipCallback } = this.props;
     return (
       <Bar
         data={this.state.chartData}
         plugins={[ChartDataLabels]}
         options={{
           plugins: {
-            datalabels: {
-              rotation: 270,
-              font: { weight: "bold" }
-              // formatter: (text)=> { return text+ 'as'; }
-            }
+            datalabels: { rotation: 270, font: { weight: "bold" } },
           },
-          tooltips: {
-            mode: 'index',
-            enabled: false,
-            custom: customTooltipCallback
-            // custom: this.customTooltip
-          },
+          tooltips: { mode: 'index', enabled: false, custom: customTooltipCallback },
           maintainAspectRatio: false,
           responsive: true,
           legend: {
-            position: 'bottom',
-            align: 'center',
-            display: false,
-            labels: {}
+            position: 'bottom', align: 'center',
+            display: false, labels: {}
           },
           scales: {
             xAxes: [{
@@ -190,28 +175,26 @@ class PressureBar extends React.Component {
   handleConfig = (hihi, high) => {
     high = parseFloat(high);
     hihi = parseFloat(hihi);
-    if (hihi != this.state.majorVal || high != this.state.minorVal) {
+    if ((hihi != this.state.majorVal || high != this.state.minorVal) && (high < hihi)) {
       this.setState((state, props) => {
         const { pvs } = props;
         return { minorVal: high, majorVal: hihi, minorArray: pvs.map(() => high), majorArray: pvs.map(() => hihi) };
       });
-      // this.setState((state, props) => {minorVal: high, majorVal: hihi }, this.updateAlarms );
     }
   }
 
   render() {
     const { minorVal, majorVal } = this.state;
-    const { title } = this.props;
+    const { title, backHandler } = this.props;
 
     return (
       <div className='PressureBar'>
         <div className='Title'>{title}</div>
-        <SettingsDialog
-          title={title + " settings"}
-          high={minorVal}
-          hihi={majorVal}
-          handleConfig={this.handleConfig} />
-
+          <SettingsDialog
+            title={title + " settings"}
+            high={minorVal}
+            hihi={majorVal}
+            handleConfig={this.handleConfig} />
         {this.state.chartData ? <article className='GraphContainer'> {this.renderBar()} </article> : 'loading...'}
       </div>
     );

@@ -1,13 +1,7 @@
 import React from 'react';
 
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import TextField from '@material-ui/core/TextField';
-import { Grid } from '@material-ui/core';
-
+import { Button, Grid, TextField, Dialog, DialogActions, DialogContent, DialogTitle} from '@material-ui/core';
+import SettingsRoundedIcon from '@material-ui/icons/SettingsRounded';
 
 class SettingsDialog extends React.Component {
     constructor(props) {
@@ -17,8 +11,8 @@ class SettingsDialog extends React.Component {
             open: false,
             hihiError: false,
             highError: false,
-            hihiVal: null,
-            highVal: null
+            hihiVal: props.hihi,
+            highVal: props.high
         };
 
     }
@@ -31,17 +25,28 @@ class SettingsDialog extends React.Component {
         this.setState({ open: false });
     };
 
+    handleAlarmState = (highVal, hihiVal) => {
+        this.setState((state, props) => {
+            if (highVal == null) { highVal = state.highVal; }
+            if (hihiVal == null) { hihiVal = state.hihiVal; }
+            const err = (parseFloat(highVal) >= parseFloat(hihiVal));
+            return {
+                hihiVal: hihiVal,
+                highVal: highVal,
+                hihiError: isNaN(hihiVal) || hihiVal === '' || err,
+                highError: isNaN(highVal) || highVal === '' || err,
+            }
+        });
+    };
+
     render() {
         return (
             <div>
-                <Button variant="contained" color="primary" onClick={this.handleClickOpen}> Settings
+                <Button startIcon={<SettingsRoundedIcon/>} size='small' style={{ margin: '2px' }} variant="contained" color="primary" onClick={this.handleClickOpen}> Settings
             </Button>
-                <Dialog
-                    open={this.state.open}
-                    onClose={this.handleClose}
+                <Dialog open={this.state.open} onClose={this.handleClose}
                     aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                >
+                    aria-describedby="alert-dialog-description" >
                     <DialogTitle id="alert-dialog-title">{this.props.title}</DialogTitle>
                     <DialogContent component={'span'}>
                         <Grid
@@ -57,14 +62,7 @@ class SettingsDialog extends React.Component {
                                 label="Major alarm (HIHI)"
                                 defaultValue={this.props.hihi}
                                 value={this.state.hihiVal}
-                                onChange={
-                                    (evt) => {
-                                        const val = evt.target.value;
-                                        this.setState({
-                                            hihiVal: val,
-                                            hihiError: isNaN(val) || val === ''
-                                        });
-                                    }}
+                                onChange={(evt) => this.handleAlarmState(null, evt.target.value)}
                             />
                             <TextField
                                 style={{ padding: '5px' }}
@@ -72,14 +70,7 @@ class SettingsDialog extends React.Component {
                                 label="Minor alarm (HIGH)"
                                 defaultValue={this.props.high}
                                 value={this.state.highVal}
-                                onChange={
-                                    (evt) => {
-                                        const val = evt.target.value;
-                                        this.setState({
-                                            highVal: val,
-                                            highError: isNaN(val) || val === ''
-                                        });
-                                    }}
+                                onChange={(evt) => this.handleAlarmState(evt.target.value, null)}
                             />
 
                         </Grid>
