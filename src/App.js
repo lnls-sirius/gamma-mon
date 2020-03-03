@@ -1,8 +1,7 @@
 import React from 'react';
 import PressureBar from './components/PressureBar';
 
-import Button from '@material-ui/core/Button';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
+import {Button, ButtonGroup } from '@material-ui/core';
 
 import bo from './static/BO-CCG.json';
 import si from './static/SI-CCG.json';
@@ -31,7 +30,7 @@ class App extends React.Component {
   customTooltipCallback = (tooltipModel) => {
 
     if (tooltipModel.opacity === 0) {
-      this.setState({ tooltipVisible: false });
+      this.setState({ tooltipVisible: false, tooltipX: '', tooltipY: '' });
       return;
     }
 
@@ -45,7 +44,7 @@ class App extends React.Component {
   renderNav = () => {
     if (this.state.content !== STATE.INITIAL) {
       return <div className='Menu'>
-        <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.INITIAL })}>Back</Button>
+        <Button variant="contained" color="default" onClick={() => this.setState({ content: STATE.INITIAL })}>Back</Button>
       </div>
     } else {
       return <div className='Menu'>
@@ -81,6 +80,8 @@ class App extends React.Component {
       </tbody>
     </table>
   }
+
+  backHandler = () => this.setState({ content: STATE.INITIAL })
 
   renderGraph = () => {
     switch (this.state.content) {
