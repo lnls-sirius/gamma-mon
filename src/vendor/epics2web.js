@@ -25,7 +25,7 @@ class ClientConnection {
         let protocol = (window.location.protocol === 'https:') ? 'wss:' : 'ws:';
 
         let defaultOptions = {
-            url: protocol + "//" + window.location.host + "" + "/epics2web/monitor",
+            url: protocol + "//" + window.location.host + "/epics2web/monitor",
             autoOpen: true, /* Will automatically connect to socket immediately instead of waiting for open function to be called */
             autoReconnect: true, /* If socket is closed, will automatically reconnect after reconnectWaitMillis */
             autoLivenessPingAndTimeout: true, /* Will ping the server every pingIntervalMillis and if no response in livenessTimeoutMillis then will close the socket as invalid */
