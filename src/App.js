@@ -45,12 +45,12 @@ class App extends React.Component {
   renderNav = () => {
     if (this.state.content !== STATE.INITIAL) {
       return <div className='Menu'>
-        <Button  variant="contained" color="primary" onClick={() => this.setState({ content: STATE.INITIAL })}>Back</Button>
+        <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.INITIAL })}>Back</Button>
       </div>
     } else {
       return <div className='Menu'>
         <div className='MainTitle'>Sirius - Pressure Readings</div>
-        <div style={{'margin-bottom': '15px'}}className='SubTitle'>Cold Cathode Gauge</div>
+        <div style={{ 'margin-bottom': '15px' }} className='SubTitle'>Cold Cathode Gauge</div>
         <ButtonGroup orientation="vertical" color="primary"
         >
           <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.BO })}>BO</Button><br />
@@ -87,7 +87,7 @@ class App extends React.Component {
       case STATE.BO:
         return <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={bo} title='BO - Pressure' />
       case STATE.SI:
-        return <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={si} title='SI - Pressure' high={1e-9} hihi={1e-8}/>
+        return <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={si} title='SI - Pressure' high={1e-9} hihi={1e-8} />
       case STATE.TB:
         return <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={tb} title='TB - Pressure' />
       case STATE.TS:
@@ -112,7 +112,7 @@ class App extends React.Component {
         </div>
 
       default:
-        if(this.state.tooltipVisible){ this.setState({tooltipVisible: false}); }
+        if (this.state.tooltipVisible) { this.setState({ tooltipVisible: false }); }
         return <div></div>
     }
   }
