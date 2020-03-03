@@ -1,12 +1,15 @@
 import React from 'react';
 import PressureBar from './components/PressureBar';
 
-import {Button, ButtonGroup } from '@material-ui/core';
+import { Button, ButtonGroup } from '@material-ui/core';
 
 import bo from './static/BO-CCG.json';
 import si from './static/SI-CCG.json';
+import fe from './static/FE-CCG.json';
 import tb from './static/TB-CCG.json';
 import ts from './static/TS-CCG.json';
+
+import { SI, BO } from './utils/consts';
 
 import './App.css';
 
@@ -18,7 +21,10 @@ const STATE = {
   TS: 4,
   ALL: 5,
   TB_TS: 6,
-  BO_TB_TS: 7
+  BO_TB_TS: 7,
+  FE: 8,
+  SI_FE: 9,
+  BO_TB_TS_FE: 10
 }
 
 class App extends React.Component {
@@ -56,8 +62,12 @@ class App extends React.Component {
           <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.SI })}>SI</Button><br />
           <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.TB })}>TB</Button><br />
           <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.TS })}>TS</Button><br />
+          <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.FE })}>FE</Button><br />
+          <div><br></br></div>
           <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.TB_TS })}>TB & TS</Button><br />
           <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.BO_TB_TS })}>BO, TB & TS</Button><br />
+          <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.BO_TB_TS_FE })}>BO, TB, TS & FE</Button><br />
+          <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.SI_FE })}>SI & FE</Button><br />
           <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.ALL })}>ALL</Button><br />
         </ButtonGroup>
       </div>
@@ -86,30 +96,50 @@ class App extends React.Component {
   renderGraph = () => {
     switch (this.state.content) {
       case STATE.BO:
-        return <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={bo} title='BO - Pressure' />
-      case STATE.SI:
-        return <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={si} title='SI - Pressure' high={1e-9} hihi={1e-8} />
+        return <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={bo} title='BO - Pressure' {...BO} />
       case STATE.TB:
-        return <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={tb} title='TB - Pressure' />
+        return <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={tb} title='TB - Pressure'  {...BO} />
       case STATE.TS:
-        return <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={ts} title='TS - Pressure' />
+        return <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={ts} title='TS - Pressure'  {...BO} />
+      case STATE.SI:
+        return <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={si} title='SI - Pressure'  {...SI} />
+      case STATE.FE:
+        return <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={fe} title='FE - Pressure'  {...SI} />
+
+
       case STATE.TB_TS:
         return <div style={{ 'display': 'flex', 'flex-direction': 'row', 'flex-wrap': 'wrap' }}>
-          <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={tb} title='TB - Pressure' />
-          <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={ts} title='TS - Pressure' />
+          <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={tb} title='TB - Pressure'  {...BO} />
+          <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={ts} title='TS - Pressure'  {...BO} />
         </div>
       case STATE.BO_TB_TS:
         return <div style={{ 'display': 'flex', 'flex-direction': 'row', 'flex-wrap': 'wrap' }}>
-          <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={bo} title='BO - Pressure' />
-          <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={tb} title='TB - Pressure' />
-          <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={ts} title='TS - Pressure' />
+          <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={bo} title='BO - Pressure' {...BO} />
+          <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={tb} title='TB - Pressure'  {...BO} />
+          <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={ts} title='TS - Pressure'  {...BO} />
         </div>
+      case STATE.BO_TB_TS_FE:
+        return <div style={{ 'display': 'flex', 'flex-direction': 'row', 'flex-wrap': 'wrap' }}>
+          <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={bo} title='BO - Pressure'  {...BO} />
+          <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={tb} title='TB - Pressure'  {...BO} />
+          <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={ts} title='TS - Pressure'  {...BO} />
+          <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={fe} title='FE - Pressure'  {...SI} />
+        </div>
+
+      case STATE.SI_FE:
+        return <div>
+          <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={si} title='SI - Pressure' {...SI} />
+          <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={fe} title='FE - Pressure' {...SI} />
+        </div>
+
+
       case STATE.ALL:
         return <div style={{ 'display': 'flex', 'flex-direction': 'row', 'flex-wrap': 'wrap' }}>
           <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={bo} title='BO - Pressure' />
           <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={tb} title='TB - Pressure' />
           <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={ts} title='TS - Pressure' />
-          <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={si} title='SI - Pressure'  high={1e-9} hihi={1e-8} />
+          <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={si} title='SI - Pressure' />
+          <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={fe} title='FE - Pressure' />
         </div>
 
       default:
