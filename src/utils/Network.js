@@ -1,14 +1,14 @@
-class Network{
-   constructor() {
-        if(! Network.instance){
+class Network {
+    constructor() {
+        if (!Network.instance) {
             Network.instance = this;
         }
-        this.secure = window.location.protocol == 'https:';
+        this.secure = window.location.protocol === 'https:';
         this.epics2webHost = '10.0.38.42';
         this.epics2webLocation = '/epics2web';
-        this.epics2webGet = 'http://' + this.epics2webHost + this.epics2webLocation + '/caget';
-        this.epics2webWs = 
-            'ws://' + this.epics2webHost + this.epics2webLocation + '/monitor';
+        this.epics2webGet = this.secure ? 'https://' : 'http://' + this.epics2webHost + this.epics2webLocation + '/caget';
+        this.epics2webWs =
+            this.secure ? 'wss://' : 'ws://' + this.epics2webHost + this.epics2webLocation + '/monitor';
         this.epics2webOptions = {
             url: this.epics2webWs,
             autoOpen: true,
@@ -22,11 +22,11 @@ class Network{
         };
 
         return Network.instance;
-   } 
+    }
 }
 
 const instance = new Network();
 Object.freeze(instance);
 
-export {instance as network};
+export { instance as network };
 
