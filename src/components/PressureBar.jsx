@@ -13,120 +13,114 @@ defaults.global.defaultFontColor = "#FFF";
 defaults.global.defaultFontSize = 16;
 
 class PressureBar extends React.Component {
-  static defaultProps = {
-    title: "A graph"
+  static defaultProps = { title: "A graph" };
 
-  }
   constructor(props) {
     super(props);
+
     this.state = {
       tooltipText: "",
-      tooltipVisible: false
+      tooltipVisible: false,
+      minorVal: props.high ? props.high : 1e-8,
+      minorArray: props.pvs.map(() => props.high ? props.high : 1e-8),
+      majorVal: props.hihi ? props.hihi : 1e-7,
+      majorArray: props.pvs.map(() => props.hihi ? props.hihi : 1e-7),
     };
+
     this.timer = null;
     this.refreshInterval = 100;
     this.epics = new Epics(this.props.pvs);
-
-    this.minorVal = this.props.high ? this.props.high : 1e-8;
-    this.majorVal = this.props.hihi ? this.props.hihi : 1e-7;
-    this.updateAlarms();
-    // this.minor = this.props.pvs.map(() => this.minorVal);
-    // this.major = this.props.pvs.map(() => this.majorVal);
 
     this.values = [];
     this.alarms = { bg: [], border: [] };
 
   }
 
-  updateAlarms = () => {
-    this.minor = this.props.pvs.map(() => this.minorVal);
-    this.major = this.props.pvs.map(() => this.majorVal);
-  }
-
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    /** Check if there's a new PV list */
-  }
+  componentDidUpdate(prevProps, prevState, snapshot) { /** Check if there's a new PV list */ }
 
   updatePVValues = () => {
-    this.values = this.props.pvs.map(pv => {
-      return this.epics.pvData[pv].value;
-    });
+    /** Refresh PV val array */
+    const { minorVal, majorVal } = this.state;
+    const { pvs } = this.props;
+
+    this.values = pvs.map(pv => { return this.epics.pvData[pv].value; });
 
     this.alarms.bg = this.values.map(value => {
       if (value && !isNaN(value)) {
-        if (value < this.minorVal) {
+        if (value < minorVal) {
           return color.OK_BG;
-        } else if (value >= this.minorVal && value < this.majorVal) {
+        } else if (value >= minorVal && value < majorVal) {
           return color.MINOR_BG;
         } else {
           return color.MAJOR_BG;
         }
       } else {
-        /** I'm returning OK here so because invalid numbers will not be plotted so this will only mess up the legend in case the first PV is invalid */
-        return color.OK_BG; // return color.INVALID_BG;
+        /** I'm returning OK here so because invalid numbers will not be plotted
+         * so this will only mess up the legend in case the first PV is invalid */
+        return color.OK_BG;
       }
     });
 
     this.alarms.border = this.values.map(value => {
       if (value && !isNaN(value)) {
-        if (value < this.minorVal) {
+        if (value < minorVal) {
           return color.OK_LINE;
-        } else if (value >= this.minorVal && value < this.majorVal)
+        } else if (value >= minorVal && value < majorVal)
           return color.MINOR_LINE;
       } else {
         /** Same as the alarm.bg*/
-        return color.OK_LINE; // return color.INVALID_LINE;
+        return color.OK_LINE;
       }
     });
   }
 
   updateContent = () => {
     this.updatePVValues();
-    let data = {
-      labels: this.props.pvs,
-      datasets: [
-        {
-          label: 'MKS - Cold Cathode',
-          backgroundColor: this.alarms.bg,
-          borderColor: this.alarms.border,
-          borderWidth: 1,
-          hoverBackgroundColor: color.OK_BG,
-          hoverBorderColor: color.HOVER_LINE,
-          data: this.values,
-        },
-        {
-          label: 'Minor Alarm',
-          type: 'line',
-          fill: false,
-          backgroundColor: color.MINOR_BG,
-          borderColor: color.MINOR_LINE,
-          borderWidth: 1,
-          data: this.minor,
-          pointRadius: 0,
-          datalabels: { display: false }
-        },
-        {
-          label: 'Major Alarm',
-          type: 'line',
-          fill: false,
-          backgroundColor: color.MAJOR_BG,
-          borderColor: color.MAJOR_LINE,
-          borderWidth: 1,
-          data: this.major,
-          pointRadius: 0,
-          datalabels: { display: false }
-        }
-      ]
-    };
-
-    this.setState({ chartData: data });
+    this.setState((state, props) => {
+      const { minorVal, majorVal, minorArray, majorArray } = state;
+      const { pvs } = props;
+      let data = {
+        labels: pvs,
+        datasets: [
+          {
+            label: 'MKS - Cold Cathode',
+            backgroundColor: this.alarms.bg,
+            borderColor: this.alarms.border,
+            borderWidth: 1,
+            hoverBackgroundColor: color.OK_BG,
+            hoverBorderColor: color.HOVER_LINE,
+            data: this.values,
+          },
+          {
+            label: 'Minor Alarm',
+            type: 'line',
+            fill: false,
+            backgroundColor: color.MINOR_BG,
+            borderColor: color.MINOR_LINE,
+            borderWidth: 1,
+            data: minorArray,
+            pointRadius: 0,
+            datalabels: { display: false }
+          },
+          {
+            label: 'Major Alarm',
+            type: 'line',
+            fill: false,
+            backgroundColor: color.MAJOR_BG,
+            borderColor: color.MAJOR_LINE,
+            borderWidth: 1,
+            data: majorArray,
+            pointRadius: 0,
+            datalabels: { display: false }
+          }
+        ]
+      };
+      return { chartData: data };
+    });
   }
 
   componentDidMount() {
-    this.timer = setInterval(
-      this.updateContent,
-      this.refreshInterval
-    );
+    this.timer = setInterval(this.updateContent, this.refreshInterval);
   }
 
   componentWillUnmount() {
@@ -135,6 +129,8 @@ class PressureBar extends React.Component {
   }
 
   renderBar() {
+    const { majorVal, minorVal} = this.state;
+    const { customTooltipCallback} = this.props;
     return (
       <Bar
         data={this.state.chartData}
@@ -143,16 +139,14 @@ class PressureBar extends React.Component {
           plugins: {
             datalabels: {
               rotation: 270,
-              font: {
-                weight: "bold"
-              }
+              font: { weight: "bold" }
               // formatter: (text)=> { return text+ 'as'; }
             }
           },
           tooltips: {
             mode: 'index',
             enabled: false,
-            custom: this.props.customTooltipCallback
+            custom: customTooltipCallback
             // custom: this.customTooltip
           },
           maintainAspectRatio: false,
@@ -182,7 +176,7 @@ class PressureBar extends React.Component {
               },
               ticks: {
                 min: 1e-12,
-                max: 1e-7,
+                max: majorVal,
                 fontSize: 14,
               },
               display: true,
@@ -194,19 +188,28 @@ class PressureBar extends React.Component {
   }
 
   handleConfig = (hihi, high) => {
-    this.majorVal = hihi;
-    this.minorVal = high;
-    this.updateAlarms();
+    high = parseFloat(high);
+    hihi = parseFloat(hihi);
+    if (hihi != this.state.majorVal || high != this.state.minorVal) {
+      this.setState((state, props) => {
+        const { pvs } = props;
+        return { minorVal: high, majorVal: hihi, minorArray: pvs.map(() => high), majorArray: pvs.map(() => hihi) };
+      });
+      // this.setState((state, props) => {minorVal: high, majorVal: hihi }, this.updateAlarms );
+    }
   }
 
   render() {
+    const { minorVal, majorVal } = this.state;
+    const { title } = this.props;
+
     return (
       <div className='PressureBar'>
-        <div className='Title'>{this.props.title}</div>
+        <div className='Title'>{title}</div>
         <SettingsDialog
-          title={this.props.title + " settings"}
-          high={this.minorVal}
-          hihi={this.majorVal}
+          title={title + " settings"}
+          high={minorVal}
+          hihi={majorVal}
           handleConfig={this.handleConfig} />
 
         {this.state.chartData ? <article className='GraphContainer'> {this.renderBar()} </article> : 'loading...'}
