@@ -17,7 +17,7 @@ const STATE = {
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { content: STATE.INITIAL, tooltipVisible: false, tooltipX: '', tooltipY: '' };
+    this.state = { content: STATE.INITIAL, tooltipVisible: false, tooltipX: '', tooltipY: '', title: "Sirius - Gamma Detectors" };
   }
 
   customTooltipCallback = (tooltipModel) => {
@@ -41,8 +41,8 @@ class App extends React.Component {
       </div>
     } else {
       return <div className='Menu'>
-        <div className='MainTitle'>Sirius - Pressure Readings</div>
-        <div style={{ 'margin-bottom': '15px' }} className='SubTitle'>Cold Cathode Gauge</div>
+        <div className='MainTitle'>{this.state.title}</div>
+        <div style={{ 'margin-bottom': '15px' }} className='SubTitle'></div>
         <ButtonGroup orientation="vertical" color="primary">
           <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.GAMMA })}>Gamma</Button><br />
         </ButtonGroup>

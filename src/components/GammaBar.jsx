@@ -140,7 +140,11 @@ class GammaBar extends React.Component {
         plugins={[ChartDataLabels]}
         options={{
           plugins: {
-            datalabels: { rotation: 270, font: { weight: "bold" } },
+            datalabels: { 
+                rotation: 270,
+                font: { weight: "bold" },
+                formatter: function(value, context) { return value.toExponential();},
+            },
           },
           tooltips: { mode: 'index', enabled: false, custom: customTooltipCallback },
           maintainAspectRatio: false,
