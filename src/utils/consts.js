@@ -1,6 +1,5 @@
-const SI = { hihi: 5e-8, high: 1e-8 };
-const BO = { hihi: 5e-7, high: 1e-7 };
-export { SI, BO };
+const GAMMA = { hihi: 2000, high: 200 };
+export { GAMMA };
 
 // class ProcessVariables {
 //     constructor(onComplete, onFailure ){
