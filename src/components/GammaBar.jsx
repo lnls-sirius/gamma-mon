@@ -24,7 +24,7 @@ class GammaBar extends React.Component {
       tooltipVisible: false,
       minorVal: props.high ? props.high : 2000,
       minorArray: props.pvs.map(() => props.high ? props.high : 1e-8),
-      majorVal: props.hihi ? props.hihi : 200,
+      majorVal: props.hihi ? props.hihi : 100,
       majorArray: props.pvs.map(() => props.hihi ? props.hihi : 1e-7),
       maxVal: null,
     };
@@ -32,6 +32,7 @@ class GammaBar extends React.Component {
     this.timer = null;
     this.refreshInterval = 100;
     this.epics = new Epics(this.props.pvs);
+    this.epicscurrent = new Epics(['SI-13C4:DI-DCCT:Current-Mon']);
 
     this.values = [];
     this.alarms = { bg: [], border: [] };
@@ -46,13 +47,14 @@ class GammaBar extends React.Component {
     const { minorVal, majorVal } = this.state;
     const { pvs } = this.props;
 
-    this.values = pvs.map(pv => { return this.epics.pvData[pv].value; });
+    this.values = pvs.map(pv => { return this.epics.pvData[pv].value.toExponential(2); });
+    this.currentvalue = this.epicscurrent.pvData['SI-13C4:DI-DCCT:Current-Mon'].value.toExponential(2);
     this.valuesMax = Math.max(...this.values);
 
     this.alarms.bg = this.values.map(value => {
       if (value && !isNaN(value)) {
         if (value < minorVal) {
-          return color.OK_BG;
+          return color.OK_GAMMA_BG;
         } else if (value >= minorVal && value < majorVal) {
           return color.MINOR_BG;
         } else {
@@ -68,12 +70,12 @@ class GammaBar extends React.Component {
     this.alarms.border = this.values.map(value => {
       if (value && !isNaN(value)) {
         if (value < minorVal) {
-          return color.OK_LINE;
+          return color.OK_GAMMA_LINE;
         } else if (value >= minorVal && value < majorVal)
           return color.MINOR_LINE;
       } else {
         /** Same as the alarm.bg*/
-        return color.OK_LINE;
+        return color.OK_GAMMA_LINE;
       }
     });
   }
@@ -91,11 +93,11 @@ class GammaBar extends React.Component {
         labels: pvs,
         datasets: [
           {
-            label: 'MKS - Cold Cathode',
+            label: 'Gamma',
             backgroundColor: this.alarms.bg,
             borderColor: this.alarms.border,
             borderWidth: 1,
-            hoverBackgroundColor: color.OK_BG,
+            hoverBackgroundColor: color.OK_GAMMA_BG,
             hoverBorderColor: color.HOVER_LINE,
             data: this.values,
           },
@@ -129,22 +131,19 @@ class GammaBar extends React.Component {
 
   componentDidMount() { this.timer = setInterval(this.updateContent, this.refreshInterval); }
 
-  componentWillUnmount() { clearInterval(this.timer); this.epics.disconnect(); }
+  componentWillUnmount() { clearInterval(this.timer); this.epics.disconnect(); this.epicscurrent.disconnect();}
 
   renderBar() {
     const { majorVal, minorVal, maxVal } = this.state;
     const { customTooltipCallback } = this.props;
+    const { labely } = this.props;
     return (
       <Bar
         data={this.state.chartData}
         plugins={[ChartDataLabels]}
         options={{
           plugins: {
-            datalabels: { 
-                rotation: 270,
-                font: { weight: "bold" },
-                formatter: function(value, context) { return value.toExponential();},
-            },
+            datalabels: { rotation: 270, font: { weight: "bold"},  color: 'rgba(184,184,184)' },
           },
           tooltips: { mode: 'index', enabled: false, custom: customTooltipCallback },
           maintainAspectRatio: false,
@@ -155,7 +154,10 @@ class GammaBar extends React.Component {
           },
           scales: {
             xAxes: [{
-              ticks: {},
+              ticks: {
+                  fontColor: 'rgba(184,184,184)',
+                  fontSize: 14
+              },
               gridLines: {
                 display: true,
                 color: 'rgba(184,184,184,0.2)',
@@ -164,13 +166,15 @@ class GammaBar extends React.Component {
             }],
             yAxes: [{
               id: 'pulse',
-              scaleLabel: { display: true, labelString: 'Pulse/s' },
+              scaleLabel: { display: true, labelString: labely, fontColor: 'rgba(184,184,184)' },
               gridLines: {
                 display: true,
                 color: 'rgba(184,184,184,0.2)',
                 zeroLineColor: 'rgba(184,184,184,0.8)'
               },
               ticks: {
+                fontColor: 'rgba(184,184,184)',
+                fontSize: 14,
                 min: 1e-12,
                 max: maxVal,
                 fontSize: 14,
@@ -199,14 +203,18 @@ class GammaBar extends React.Component {
     const { title, backHandler } = this.props;
 
     return (
-      <div className='GammaBar'>
+        <div className='GammaBar'>
+      <div className='GammaBar1'>
         <div className='Title'>{title}</div>
         <SettingsDialog
           title={title + " settings"}
           high={minorVal}
           hihi={majorVal}
           handleConfig={this.handleConfig} />
+
         {this.state.chartData ? <article className='GraphContainer'> {this.renderBar()} </article> : 'loading...'}
+      </div>
+      {'\nSI-13C4:DI-DCCT:Current-Mon:           ' + this.currentvalue + " mA"}
       </div>
     );
   }

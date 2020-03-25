@@ -4,6 +4,7 @@ import GammaBar from './components/GammaBar';
 import { Button, ButtonGroup } from '@material-ui/core';
 
 import gamma from './static/gamma.json';
+import gamma_norm from './static/gamma_norm.json';
 
 import { GAMMA } from './utils/consts';
 
@@ -11,13 +12,14 @@ import './App.css';
 
 const STATE = {
   INITIAL: 0,
+  GAMMA_NORM: 1,
   GAMMA: 3
 }
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { content: STATE.INITIAL, tooltipVisible: false, tooltipX: '', tooltipY: '', title: "Sirius - Gamma Detectors" };
+    this.state = { content: STATE.INITIAL, tooltipVisible: false, tooltipX: '', tooltipY: '' };
   }
 
   customTooltipCallback = (tooltipModel) => {
@@ -41,10 +43,11 @@ class App extends React.Component {
       </div>
     } else {
       return <div className='Menu'>
-        <div className='MainTitle'>{this.state.title}</div>
-        <div style={{ 'margin-bottom': '15px' }} className='SubTitle'></div>
+        <div className='MainTitle'>Sirius - Gamma Detectors</div>
+        <div style={{ 'margin-bottom': '15px' }} className='SubTitle'>Gamma Detector Counting Readings</div>
         <ButtonGroup orientation="vertical" color="primary">
           <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.GAMMA })}>Gamma</Button><br />
+          <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.GAMMA_NORM })}>Gamma - Normalized Countings (SI current)</Button><br />
         </ButtonGroup>
       </div>
 
@@ -72,7 +75,9 @@ class App extends React.Component {
   renderGraph = () => {
     switch (this.state.content) {
       case STATE.GAMMA:
-        return <GammaBar customTooltipCallback={this.customTooltipCallback} pvs={gamma} title='GAMMA' {...GAMMA} />
+        return <GammaBar customTooltipCallback={this.customTooltipCallback} pvs={gamma} labely='Pulses/second' title='Gamma Detector - Countings' {...GAMMA} />
+      case STATE.GAMMA_NORM:
+        return <GammaBar customTooltipCallback={this.customTooltipCallback} pvs={gamma_norm} labely='Pulses/second.mA' title='Gamma Detector - Normalized Countings (SI Current)' {...GAMMA} />
       default:
         if (this.state.tooltipVisible) { this.setState({ tooltipVisible: false }); }
         return <div></div>;
