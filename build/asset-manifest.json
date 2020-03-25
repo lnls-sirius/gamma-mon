@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/download/gamma-detectors/build/static/css/main.09c7a59d.chunk.css",
-    "main.js": "/download/gamma-detectors/build/static/js/main.28b75013.chunk.js",
-    "main.js.map": "/download/gamma-detectors/build/static/js/main.28b75013.chunk.js.map",
-    "runtime-main.js": "/download/gamma-detectors/build/static/js/runtime-main.e27b3521.js",
-    "runtime-main.js.map": "/download/gamma-detectors/build/static/js/runtime-main.e27b3521.js.map",
-    "static/js/2.112a47e7.chunk.js": "/download/gamma-detectors/build/static/js/2.112a47e7.chunk.js",
-    "static/js/2.112a47e7.chunk.js.map": "/download/gamma-detectors/build/static/js/2.112a47e7.chunk.js.map",
-    "index.html": "/download/gamma-detectors/build/index.html",
-    "precache-manifest.99308f4347a18cb7e588b12b700d721d.js": "/download/gamma-detectors/build/precache-manifest.99308f4347a18cb7e588b12b700d721d.js",
-    "service-worker.js": "/download/gamma-detectors/build/service-worker.js",
-    "static/css/main.09c7a59d.chunk.css.map": "/download/gamma-detectors/build/static/css/main.09c7a59d.chunk.css.map",
-    "static/js/2.112a47e7.chunk.js.LICENSE.txt": "/download/gamma-detectors/build/static/js/2.112a47e7.chunk.js.LICENSE.txt"
+    "main.css": "/download/vac-pressure-monitor/build/static/css/main.aba5e445.chunk.css",
+    "main.js": "/download/vac-pressure-monitor/build/static/js/main.99aea60c.chunk.js",
+    "main.js.map": "/download/vac-pressure-monitor/build/static/js/main.99aea60c.chunk.js.map",
+    "runtime-main.js": "/download/vac-pressure-monitor/build/static/js/runtime-main.698dd3fa.js",
+    "runtime-main.js.map": "/download/vac-pressure-monitor/build/static/js/runtime-main.698dd3fa.js.map",
+    "static/js/2.d6e97300.chunk.js": "/download/vac-pressure-monitor/build/static/js/2.d6e97300.chunk.js",
+    "static/js/2.d6e97300.chunk.js.map": "/download/vac-pressure-monitor/build/static/js/2.d6e97300.chunk.js.map",
+    "index.html": "/download/vac-pressure-monitor/build/index.html",
+    "precache-manifest.9bf07cb843ccc4dc94460e00decb9768.js": "/download/vac-pressure-monitor/build/precache-manifest.9bf07cb843ccc4dc94460e00decb9768.js",
+    "service-worker.js": "/download/vac-pressure-monitor/build/service-worker.js",
+    "static/css/main.aba5e445.chunk.css.map": "/download/vac-pressure-monitor/build/static/css/main.aba5e445.chunk.css.map",
+    "static/js/2.d6e97300.chunk.js.LICENSE.txt": "/download/vac-pressure-monitor/build/static/js/2.d6e97300.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.e27b3521.js",
-    "static/js/2.112a47e7.chunk.js",
-    "static/css/main.09c7a59d.chunk.css",
-    "static/js/main.28b75013.chunk.js"
+    "static/js/runtime-main.698dd3fa.js",
+    "static/js/2.d6e97300.chunk.js",
+    "static/css/main.aba5e445.chunk.css",
+    "static/js/main.99aea60c.chunk.js"
   ]
 }
