@@ -1,7 +1,8 @@
 import React from 'react';
 
 import PressureBar from './PressureBar';
-import { Button, ButtonGroup } from '@material-ui/core';
+import { Grid, Button, ButtonGroup } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 
 import bo from '../static/BO-CCG.json';
 import si from '../static/SI-CCG.json';
@@ -9,7 +10,7 @@ import fe from '../static/FE-CCG.json';
 import tb from '../static/TB-CCG.json';
 import ts from '../static/TS-CCG.json';
 
-import { SI, BO } from '../utils/consts';
+import { SI, BO, BASE_URL } from '../utils/consts';
 
 const STATE = {
     INITIAL: 0, BO: 1, SI: 2, TB: 3, TS: 4, ALL: 5, TB_TS: 6,
@@ -19,7 +20,7 @@ const STATE = {
 class CCG extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { content: STATE.INITIAL, tooltipVisible: false, tooltipX: '', tooltipY: '', 'baseUrl': '' };
+        this.state = { content: STATE.INITIAL, tooltipVisible: false, tooltipX: '', tooltipY: '' };
     }
 
     customTooltipCallback = (tooltipModel) => {
@@ -45,20 +46,53 @@ class CCG extends React.Component {
             return <div className='Menu'>
                 <div className='MainTitle'>Sirius - Pressure Readings</div>
                 <div style={{ 'margin-bottom': '15px' }} className='SubTitle'>Cold Cathode Gauge</div>
-                <ButtonGroup orientation="vertical" color="primary">
-                    <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.BO })}>BO</Button><br />
-                    <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.SI })}>SI</Button><br />
-                    <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.TB })}>TB</Button><br />
-                    <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.TS })}>TS</Button><br />
-                    <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.FE })}>FE</Button><br />
-                    <div><br></br></div>
-                    <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.TB_TS })}>TB & TS</Button><br />
-                    <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.BO_TB_TS })}>BO, TB & TS</Button><br />
-                    <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.BO_TB_TS_FE })}>BO, TB, TS & FE</Button><br />
-                    <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.SI_FE })}>SI & FE</Button><br />
-                    <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.ALL })}>ALL</Button><br />
-                </ButtonGroup>
-            </div>
+                <Grid container justify='center' flexGrow={1}>
+                    <Grid item style={{ 'margin': '4px' }}>
+                        <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.BO })}>BO</Button><br />
+                    </Grid>
+                    <Grid item style={{ 'margin': '4px' }}>
+                        <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.SI })}>SI</Button><br />
+                    </Grid>
+                    <Grid item style={{ 'margin': '4px' }}>
+                        <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.TB })}>TB</Button><br />
+                    </Grid>
+                    <Grid item style={{ 'margin': '4px' }}>
+                        <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.TS })}>TS</Button><br />
+                    </Grid>
+                    <Grid item style={{ 'margin': '4px' }}>
+                        <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.FE })}>FE</Button><br />
+                    </Grid>
+                </Grid>
+                <Grid container justify='center' flexGrow={1}>
+                    <Grid item style={{ 'margin': '4px' }}>
+                        <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.TB_TS })}>TB & TS</Button><br />
+                    </Grid>
+                    <Grid item style={{ 'margin': '4px' }}>
+                        <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.BO_TB_TS })}>BO, TB & TS</Button><br />
+                    </Grid>
+                    <Grid item style={{ 'margin': '4px' }}>
+                        <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.BO_TB_TS_FE })}>BO, TB, TS & FE</Button><br />
+                    </Grid>
+                    <Grid item style={{ 'margin': '4px' }}>
+                        <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.SI_FE })}>SI & FE</Button><br />
+                    </Grid>
+                </Grid>
+                <Grid container justify='center' flexGrow={1}>
+                    <Grid item style={{ 'margin': '4px' }}>
+                        <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.ALL })}>ALL</Button><br />
+                    </Grid>
+                </Grid>
+                <Grid container justify='center' flexGrow={1}>
+                    <Grid item style={{ 'margin': '4px' }}>
+                        <Button
+                            component={Link}
+                            to={BASE_URL}
+                            color="secondary"
+                            variant='contained'>Back</Button>
+                    </Grid>
+                </Grid>
+
+            </div >
         }
     }
 
@@ -134,19 +168,12 @@ class CCG extends React.Component {
                 return <div></div>
         }
     }
-    componentDidMount() {
-        if (typeof window !== 'undefined') {
-            this.setState({ 'baseUrl': window.location.pathname });
-        } else {
-            console.log('Failed to set baseUrl, window undefined');
-            // work out what you want to do server-side...
-        }
-    }
+
     render() {
         return <div>
-              {this.renderGraph()}
-              {this.renderCustomTooltip()}
-              {this.renderNav()}
+            {this.renderGraph()}
+            {this.renderCustomTooltip()}
+            {this.renderNav()}
         </div>
     }
 }
