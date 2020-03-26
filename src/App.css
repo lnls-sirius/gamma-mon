@@ -1,12 +1,9 @@
 .App {
   align-items: center;
-  background-color: #282c34;
   color: white;
   font-size: calc(12px + 2vmin);
   justify-content: center;
-  min-height: 100vh;
   text-align: center;
-  margin-top: 0;
 }
 
 .Menu{
@@ -16,7 +13,6 @@
 
 .MainTitle{
   font-size: 18pt;
-
 }
 
 .SubTitle{
