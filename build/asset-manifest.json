@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/OPI/VACS/static/css/main.d1f7281b.chunk.css",
-    "main.js": "/OPI/VACS/static/js/main.4adb07fc.chunk.js",
-    "main.js.map": "/OPI/VACS/static/js/main.4adb07fc.chunk.js.map",
+    "main.css": "/OPI/VACS/static/css/main.4c5ff98e.chunk.css",
+    "main.js": "/OPI/VACS/static/js/main.f6ccd9c1.chunk.js",
+    "main.js.map": "/OPI/VACS/static/js/main.f6ccd9c1.chunk.js.map",
     "runtime-main.js": "/OPI/VACS/static/js/runtime-main.38b656d4.js",
     "runtime-main.js.map": "/OPI/VACS/static/js/runtime-main.38b656d4.js.map",
-    "static/js/2.71bc1c7b.chunk.js": "/OPI/VACS/static/js/2.71bc1c7b.chunk.js",
-    "static/js/2.71bc1c7b.chunk.js.map": "/OPI/VACS/static/js/2.71bc1c7b.chunk.js.map",
+    "static/js/2.b0a36b1c.chunk.js": "/OPI/VACS/static/js/2.b0a36b1c.chunk.js",
+    "static/js/2.b0a36b1c.chunk.js.map": "/OPI/VACS/static/js/2.b0a36b1c.chunk.js.map",
     "index.html": "/OPI/VACS/index.html",
-    "precache-manifest.7f2444dcf0220576f772956677d5e227.js": "/OPI/VACS/precache-manifest.7f2444dcf0220576f772956677d5e227.js",
+    "precache-manifest.8c8d3abb0b1821777c6fb2fbf4f63f78.js": "/OPI/VACS/precache-manifest.8c8d3abb0b1821777c6fb2fbf4f63f78.js",
     "service-worker.js": "/OPI/VACS/service-worker.js",
-    "static/css/main.d1f7281b.chunk.css.map": "/OPI/VACS/static/css/main.d1f7281b.chunk.css.map",
-    "static/js/2.71bc1c7b.chunk.js.LICENSE.txt": "/OPI/VACS/static/js/2.71bc1c7b.chunk.js.LICENSE.txt"
+    "static/css/main.4c5ff98e.chunk.css.map": "/OPI/VACS/static/css/main.4c5ff98e.chunk.css.map",
+    "static/js/2.b0a36b1c.chunk.js.LICENSE.txt": "/OPI/VACS/static/js/2.b0a36b1c.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.38b656d4.js",
-    "static/js/2.71bc1c7b.chunk.js",
-    "static/css/main.d1f7281b.chunk.css",
-    "static/js/main.4adb07fc.chunk.js"
+    "static/js/2.b0a36b1c.chunk.js",
+    "static/css/main.4c5ff98e.chunk.css",
+    "static/js/main.f6ccd9c1.chunk.js"
   ]
 }
