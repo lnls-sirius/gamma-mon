@@ -1,35 +1,24 @@
 import React from 'react';
-import PressureBar from './components/PressureBar';
+import GammaBar from './components/GammaBar';
 
 import { Button, ButtonGroup } from '@material-ui/core';
 
-import bo from './static/BO-CCG.json';
-import si from './static/SI-CCG.json';
-import fe from './static/FE-CCG.json';
-import tb from './static/TB-CCG.json';
-import ts from './static/TS-CCG.json';
+import gamma from './static/gamma.json';
+import gamma_norm from './static/gamma_norm.json';
 
-import { SI, BO } from './utils/consts';
+import { GAMMA } from './utils/consts';
 
 import './App.css';
 
 const STATE = {
   INITIAL: 0,
-  BO: 1,
-  SI: 2,
-  TB: 3,
-  TS: 4,
-  ALL: 5,
-  TB_TS: 6,
-  BO_TB_TS: 7,
-  FE: 8,
-  SI_FE: 9,
-  BO_TB_TS_FE: 10
+  GAMMA_NORM: 1,
+  GAMMA: 3
 }
 
 class App extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = { content: STATE.INITIAL, tooltipVisible: false, tooltipX: '', tooltipY: '' };
   }
 
@@ -54,21 +43,11 @@ class App extends React.Component {
       </div>
     } else {
       return <div className='Menu'>
-        <div className='MainTitle'>Sirius - Pressure Readings</div>
-        <div style={{ 'margin-bottom': '15px' }} className='SubTitle'>Cold Cathode Gauge</div>
-        <ButtonGroup orientation="vertical" color="primary"
-        >
-          <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.BO })}>BO</Button><br />
-          <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.SI })}>SI</Button><br />
-          <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.TB })}>TB</Button><br />
-          <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.TS })}>TS</Button><br />
-          <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.FE })}>FE</Button><br />
-          <div><br></br></div>
-          <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.TB_TS })}>TB & TS</Button><br />
-          <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.BO_TB_TS })}>BO, TB & TS</Button><br />
-          <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.BO_TB_TS_FE })}>BO, TB, TS & FE</Button><br />
-          <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.SI_FE })}>SI & FE</Button><br />
-          <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.ALL })}>ALL</Button><br />
+        <div className='MainTitle'>Sirius - Gamma Detectors</div>
+        <div style={{ 'margin-bottom': '15px' }} className='SubTitle'>Gamma Detector Counting Readings</div>
+        <ButtonGroup orientation="vertical" color="primary">
+          <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.GAMMA })}>Gamma</Button><br />
+          <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.GAMMA_NORM })}>Gamma - Normalized Countings (SI current)</Button><br />
         </ButtonGroup>
       </div>
 
@@ -95,56 +74,13 @@ class App extends React.Component {
 
   renderGraph = () => {
     switch (this.state.content) {
-      case STATE.BO:
-        return <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={bo} title='BO - Pressure' {...BO} />
-      case STATE.TB:
-        return <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={tb} title='TB - Pressure'  {...BO} />
-      case STATE.TS:
-        return <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={ts} title='TS - Pressure'  {...BO} />
-      case STATE.SI:
-        return <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={si} title='SI - Pressure'  {...SI} />
-      case STATE.FE:
-        return <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={fe} title='FE - Pressure'  {...SI} />
-
-
-      case STATE.TB_TS:
-        return <div style={{ 'display': 'flex', 'flex-direction': 'row', 'flex-wrap': 'wrap' }}>
-          <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={tb} title='TB - Pressure'  {...BO} />
-          <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={ts} title='TS - Pressure'  {...BO} />
-        </div>
-      case STATE.BO_TB_TS:
-        return <div style={{ 'display': 'flex', 'flex-direction': 'row', 'flex-wrap': 'wrap' }}>
-          <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={bo} title='BO - Pressure' {...BO} />
-          <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={tb} title='TB - Pressure'  {...BO} />
-          <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={ts} title='TS - Pressure'  {...BO} />
-        </div>
-      case STATE.BO_TB_TS_FE:
-        return <div style={{ 'display': 'flex', 'flex-direction': 'row', 'flex-wrap': 'wrap' }}>
-          <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={bo} title='BO - Pressure'  {...BO} />
-          <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={tb} title='TB - Pressure'  {...BO} />
-          <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={ts} title='TS - Pressure'  {...BO} />
-          <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={fe} title='FE - Pressure'  {...SI} />
-        </div>
-
-      case STATE.SI_FE:
-        return <div>
-          <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={si} title='SI - Pressure' {...SI} />
-          <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={fe} title='FE - Pressure' {...SI} />
-        </div>
-
-
-      case STATE.ALL:
-        return <div style={{ 'display': 'flex', 'flex-direction': 'row', 'flex-wrap': 'wrap' }}>
-          <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={bo} title='BO - Pressure' />
-          <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={tb} title='TB - Pressure' />
-          <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={ts} title='TS - Pressure' />
-          <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={si} title='SI - Pressure' />
-          <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={fe} title='FE - Pressure' />
-        </div>
-
+      case STATE.GAMMA:
+        return <GammaBar customTooltipCallback={this.customTooltipCallback} pvs={gamma} labely='Pulses/second' title='Gamma Detector - Countings' {...GAMMA} />
+      case STATE.GAMMA_NORM:
+        return <GammaBar customTooltipCallback={this.customTooltipCallback} pvs={gamma_norm} labely='Pulses/second.mA' title='Gamma Detector - Normalized Countings (SI Current)' {...GAMMA} />
       default:
         if (this.state.tooltipVisible) { this.setState({ tooltipVisible: false }); }
-        return <div></div>
+        return <div></div>;
     }
   }
 

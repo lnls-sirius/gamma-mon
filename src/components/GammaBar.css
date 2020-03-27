@@ -1,0 +1,17 @@
+.GammaBar {
+    resize: horizontal;
+    overflow: auto;
+}
+
+.GammaBar .Title{
+    position: relative;
+    padding-top: 25px;
+    font-size: 16pt;
+}
+
+.GraphContainer {
+    position: relative;
+    height: 80vh; 
+    padding-left: 25px;
+    padding-right: 50px;
+}
