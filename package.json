@@ -1,7 +1,7 @@
 {
-  "name": "pressure-mon",
-  "version": "0.1.0",
-  "homepage": "/download/vac-pressure-monitor/build",
+  "name": "cons-webgraph",
+  "version": "0.1.1",
+  "homepage": "/OPI/RADS/GAMMA",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.9.4",
