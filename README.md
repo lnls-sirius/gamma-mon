@@ -1,7 +1,9 @@
-## Dependencies
+# WEB Graph
+EPICS PVs visualization
 
-https://github.com/JeffersonLab/epics2web
-
-
-## Create React App
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Dependencies
+[epics2web](https://github.com/JeffersonLab/epics2web)
+[chartjs](https://www.chartjs.org/)
+[material-ui](https://material-ui.com/)
+
