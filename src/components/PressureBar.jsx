@@ -27,6 +27,7 @@ class PressureBar extends React.Component {
       majorVal: props.hihi ? props.hihi : 1e-7,
       majorArray: props.pvs.map(() => props.hihi ? props.hihi : 1e-7),
       maxVal: null,
+      step: props.step ? props.step : 1e-8,
     };
 
     this.timer = null;
@@ -46,7 +47,14 @@ class PressureBar extends React.Component {
     const { minorVal, majorVal } = this.state;
     const { pvs } = this.props;
 
-    this.values = pvs.map(pv => { return this.epics.pvData[pv].value; });
+    this.values = pvs.map(pv => {
+        try{
+            return this.epics.pvData[pv].value.toExponential(2);
+
+        }catch(e){
+            return this.epics.pvData[pv].value;
+        }
+    });
     this.valuesMax = Math.max(...this.values);
 
     this.alarms.bg = this.values.map(value => {
@@ -132,7 +140,7 @@ class PressureBar extends React.Component {
   componentWillUnmount() { clearInterval(this.timer); this.epics.disconnect(); }
 
   renderBar() {
-    const { majorVal, minorVal, maxVal } = this.state;
+    const { majorVal, minorVal, maxVal, step } = this.state;
     const { customTooltipCallback } = this.props;
     return (
       <Bar
@@ -167,9 +175,12 @@ class PressureBar extends React.Component {
                 zeroLineColor: 'rgba(184,184,184,0.8)'
               },
               ticks: {
+                maxTicksLimit: 100,
                 min: 1e-12,
                 max: maxVal,
                 fontSize: 14,
+                stepSize: step,
+                beginAtZero: false,
               },
               display: true,
               type: 'logarithmic',
@@ -179,19 +190,30 @@ class PressureBar extends React.Component {
       />)
   }
 
-  handleConfig = (hihi, high) => {
+  handleConfig = (hihi, high, step) => {
     high = parseFloat(high);
     hihi = parseFloat(hihi);
-    if ((hihi != this.state.majorVal || high != this.state.minorVal) && (high < hihi)) {
+    step = parseFloat(step);
+    if (
+        (
+            (hihi != this.state.majorVal || high != this.state.minorVal) && (high < hihi)
+        ) || (step < hihi)) {
+
       this.setState((state, props) => {
         const { pvs } = props;
-        return { minorVal: high, majorVal: hihi, minorArray: pvs.map(() => high), majorArray: pvs.map(() => hihi) };
+        console.log("HandleConfig",hihi,high,step);
+        return { 
+            minorVal: high,
+            majorVal: hihi,
+            step: step,
+            minorArray: pvs.map(() => high),
+            majorArray: pvs.map(() => hihi) };
       });
     }
   }
 
   render() {
-    const { minorVal, majorVal } = this.state;
+    const { minorVal, majorVal, step} = this.state;
     const { title, backHandler } = this.props;
 
     return (
@@ -201,6 +223,7 @@ class PressureBar extends React.Component {
           title={title + " settings"}
           high={minorVal}
           hihi={majorVal}
+          step={step}
           handleConfig={this.handleConfig} />
         {this.state.chartData ? <article className='GraphContainer'> {this.renderBar()} </article> : 'loading...'}
       </div>

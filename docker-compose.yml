@@ -1,0 +1,10 @@
+version: "3.7"
+services:
+    node:
+        image: node:13.8.0-stretch
+        command: sleep infinity
+        volumes:
+            - ".:/pressure-mon:rw"
+        ports:
+            - 3001:3000
+       

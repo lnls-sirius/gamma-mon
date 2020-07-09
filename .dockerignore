@@ -1,0 +1,7 @@
+docker-compose.yml
+.dockerignore
+.git
+.gitignore
+LICENSE.epics2web
+misc
+README.md

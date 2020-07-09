@@ -12,7 +12,8 @@ class SettingsDialog extends React.Component {
             hihiError: false,
             highError: false,
             hihiVal: props.hihi,
-            highVal: props.high
+            highVal: props.high,
+            step: props.step,
         };
 
     }
@@ -36,6 +37,13 @@ class SettingsDialog extends React.Component {
                 hihiError: isNaN(hihiVal) || hihiVal === '' || err,
                 highError: isNaN(highVal) || highVal === '' || err,
             }
+        });
+    };
+
+    handleStep = (step) => {
+        this.setState((state, props) => {
+            if(step == null) { step = state.step; }
+            return { step: step, }
         });
     };
 
@@ -73,6 +81,14 @@ class SettingsDialog extends React.Component {
                                 onChange={(evt) => this.handleAlarmState(evt.target.value, null)}
                             />
 
+                            <TextField
+                                style={{ padding: '5px' }}
+                                label="Tick Step"
+                                defaultValue={this.props.step}
+                                value={this.state.step}
+                                onChange={(evt) => this.handleStep(evt.target.value)}
+                            />
+
                         </Grid>
                     </DialogContent>
                     <DialogActions>
@@ -81,7 +97,9 @@ class SettingsDialog extends React.Component {
                                 if (!this.state.highError && !this.state.hihiError) {
                                     this.props.handleConfig(
                                         this.state.hihiVal ? this.state.hihiVal : this.props.hihi,
-                                        this.state.highVal ? this.state.highVal : this.props.high);
+                                        this.state.highVal ? this.state.highVal : this.props.high,
+                                        this.state.step    ? this.state.step    : this.props.step,
+                                    );
                                     this.handleClose();
                                 }
                             }}
