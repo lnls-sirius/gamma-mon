@@ -1,1 +1,1 @@
-["TS-01:VA-CCG-BG:Pressure-Mon","TS-01:VA-CCG-ED:Pressure-Mon","TS-04:VA-CCG-BG:Pressure-Mon","TS-04:VA-CCG-MD:Pressure-Mon"]
+    ["TS-01:VA-CCG-BG:Pressure-Mon","TS-01:VA-CCG-ED:Pressure-Mon","TS-04:VA-CCG-BG:Pressure-Mon","TS-04:VA-CCG-MD:Pressure-Mon", "Calc:VA-CCG-TS-Avg:Pressure-Mon"]

@@ -20,5 +20,6 @@
     "BO-44U:VA-CCG-BG:Pressure-Mon",
     "BO-46U:VA-CCG-ED:Pressure-Mon",
     "BO-47U:VA-CCG-ED:Pressure-Mon",
-    "BO-48D:VA-CCG-ED:Pressure-Mon"
+    "BO-48D:VA-CCG-ED:Pressure-Mon",
+    "Calc:VA-CCG-BO-Avg:Pressure-Mon"
 ]

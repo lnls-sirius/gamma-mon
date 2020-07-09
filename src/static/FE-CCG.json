@@ -48,5 +48,6 @@
     "SI-19C2FE:VA-CCG-MD:Pressure-Mon",
     "SI-19SPFE:VA-CCG-MD:Pressure-Mon",
     "SI-20BCFE:VA-CCG-MD:Pressure-Mon",
-    "SI-20SBFE:VA-CCG-MD:Pressure-Mon"
+    "SI-20SBFE:VA-CCG-MD:Pressure-Mon",
+    "Calc:VA-CCG-FE-Avg:Pressure-Mon"
 ]
