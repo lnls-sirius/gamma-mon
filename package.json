@@ -1,6 +1,6 @@
 {
   "name": "pressure-mon",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "homepage": "/OPI/VACS",
   "private": true,
   "dependencies": {
