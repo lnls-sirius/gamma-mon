@@ -49,7 +49,7 @@ class PressureBar extends React.Component {
 
     this.values = pvs.map(pv => {
         try{
-            return this.epics.pvData[pv].value.toExponential(2);
+            return this.epics.pvData[pv].value.toExponential(1);
 
         }catch(e){
             return this.epics.pvData[pv].value;
@@ -67,7 +67,7 @@ class PressureBar extends React.Component {
           return color.MAJOR_BG;
         }
       } else {
-        /** I'm returning OK here so because invalid numbers will not be plotted
+        /** I'm returning OK here because invalid numbers will not be plotted
          * so this will only mess up the legend in case the first PV is invalid */
         return color.OK_BG;
       }
@@ -176,11 +176,25 @@ class PressureBar extends React.Component {
               },
               ticks: {
                 maxTicksLimit: 100,
-                min: 1e-12,
+                min: 5e-12,
                 max: maxVal,
                 fontSize: 14,
-                stepSize: step,
+                //stepSize: step,
                 beginAtZero: false,
+                callback: function(label, index, labels) {
+                    switch(label){
+                        case 1e-12:
+                        case 1e-11:
+                        case 1e-10:
+                        case 1e-9:
+                        case 1e-8:
+                        case 1e-7:
+                        case 1e-6:
+                            return label;
+                        default:
+                            return "";
+                    }
+                }
               },
               display: true,
               type: 'logarithmic',
@@ -201,7 +215,6 @@ class PressureBar extends React.Component {
 
       this.setState((state, props) => {
         const { pvs } = props;
-        console.log("HandleConfig",hihi,high,step);
         return { 
             minorVal: high,
             majorVal: hihi,
