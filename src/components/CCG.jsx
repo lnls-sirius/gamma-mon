@@ -1,7 +1,7 @@
 import React from 'react';
 
 import PressureBar from './PressureBar';
-import { Grid, Button, ButtonGroup } from '@material-ui/core';
+import { Grid, Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
 import bo from '../static/BO-CCG.json';

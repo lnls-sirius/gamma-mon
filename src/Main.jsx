@@ -11,7 +11,7 @@ const useStyles = makeStyles(theme => ({
         alignItems: 'center',
         marginTop: theme.spacing(4)
     },
-    component:{
+    component: {
         margin: theme.spacing(1)
     }
 }));
@@ -20,10 +20,10 @@ export default props => {
     const classes = useStyles();
     return <div>
         <Grid className={classes.grid}>
-            <Typography 
+            <Typography
                 className={classes.component}
-                style={{'font-size':'18pt'}}>VACS - WEB OPIs</Typography>
-            <Button 
+                style={{ 'font-size': '18pt' }}>VACS - WEB OPIs</Typography>
+            <Button
                 className={classes.component}
                 component={Link}
                 to={CCG_URL}

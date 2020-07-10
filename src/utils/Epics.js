@@ -9,7 +9,7 @@ class Epics {
 
         this.pvData = {}
         this.monitoredPVsList.forEach(element => {
-            this.pvData[element] = { date:null, value:null, datatype:null, count:null};
+            this.pvData[element] = { date: null, value: null, datatype: null, count: null };
         });
 
         this.con.onopen = (e) => {
@@ -36,8 +36,8 @@ class Epics {
         };
     }
 
-    disconnect = ()=>{
-        if(this.con){
+    disconnect = () => {
+        if (this.con) {
             this.con.autoReconnect = false;
             this.con.close();
             this.monitoredPVsList = [];

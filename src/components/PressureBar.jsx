@@ -6,7 +6,6 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 import Epics from '../utils/Epics';
 import { color } from '../utils/Colors';
 import "./PressureBar.css";
-import { Button } from '@material-ui/core';
 
 import SettingsDialog from './SettingsDialog';
 
@@ -27,7 +26,8 @@ class PressureBar extends React.Component {
       majorVal: props.hihi ? props.hihi : 1e-7,
       majorArray: props.pvs.map(() => props.hihi ? props.hihi : 1e-7),
       maxVal: null,
-      step: props.step ? props.step : 1e-8,
+      botLim: props.botLim ? props.botLim : 5e-12,
+      topLim: props.topLim ? props.topLim : 1e-6,
     };
 
     this.timer = null;
@@ -48,12 +48,12 @@ class PressureBar extends React.Component {
     const { pvs } = this.props;
 
     this.values = pvs.map(pv => {
-        try{
-            return this.epics.pvData[pv].value.toExponential(1);
+      try {
+        return this.epics.pvData[pv].value.toExponential(1);
 
-        }catch(e){
-            return this.epics.pvData[pv].value;
-        }
+      } catch (e) {
+        return this.epics.pvData[pv].value;
+      }
     });
     this.valuesMax = Math.max(...this.values);
 
@@ -131,7 +131,7 @@ class PressureBar extends React.Component {
           }
         ]
       };
-      return { chartData: data, maxVal: maxVal};
+      return { chartData: data, maxVal: maxVal };
     });
   }
 
@@ -139,8 +139,8 @@ class PressureBar extends React.Component {
 
   componentWillUnmount() { clearInterval(this.timer); this.epics.disconnect(); }
 
-  renderBar() {
-    const { majorVal, minorVal, maxVal, step } = this.state;
+  renderBar = () => {
+    const { majorVal, minorVal, maxVal, botLim, topLim } = this.state;
     const { customTooltipCallback } = this.props;
     return (
       <Bar
@@ -176,24 +176,27 @@ class PressureBar extends React.Component {
               },
               ticks: {
                 maxTicksLimit: 100,
-                min: 5e-12,
-                max: maxVal,
+                min: botLim,
+                max: topLim,
                 fontSize: 14,
-                //stepSize: step,
                 beginAtZero: false,
-                callback: function(label, index, labels) {
-                    switch(label){
-                        case 1e-12:
-                        case 1e-11:
-                        case 1e-10:
-                        case 1e-9:
-                        case 1e-8:
-                        case 1e-7:
-                        case 1e-6:
-                            return label;
-                        default:
-                            return "";
-                    }
+                callback: function (label, index, labels) {
+                  switch (label) {
+                    case 1e-12:
+                    case 1e-11:
+                    case 1e-10:
+                    case 1e-9:
+                    case 1e-8:
+                    case 1e-7:
+                    case 1e-6:
+                    case 1e-5:
+                    case 1e-4:
+                    case 1e-3:
+                    case 1e-2:
+                      return label.toExponential(1);
+                    default:
+                      return "";
+                  }
                 }
               },
               display: true,
@@ -203,30 +206,31 @@ class PressureBar extends React.Component {
         }}
       />)
   }
-
-  handleConfig = (hihi, high, step) => {
+  handleConfigLimits = (topLim, botLim) => {
+    const topLimf = parseFloat(topLim);
+    const botLimf = parseFloat(botLim);
+    this.setState((state, props) => {
+      return { botLim: botLimf, topLim: topLimf };
+    });
+  }
+  handleConfig = (hihi, high) => {
     high = parseFloat(high);
     hihi = parseFloat(hihi);
-    step = parseFloat(step);
-    if (
-        (
-            (hihi != this.state.majorVal || high != this.state.minorVal) && (high < hihi)
-        ) || (step < hihi)) {
-
+    if ((hihi != this.state.majorVal || high != this.state.minorVal) && (high < hihi)) {
       this.setState((state, props) => {
         const { pvs } = props;
-        return { 
-            minorVal: high,
-            majorVal: hihi,
-            step: step,
-            minorArray: pvs.map(() => high),
-            majorArray: pvs.map(() => hihi) };
+        return {
+          minorVal: high,
+          majorVal: hihi,
+          minorArray: pvs.map(() => high),
+          majorArray: pvs.map(() => hihi)
+        };
       });
     }
   }
 
   render() {
-    const { minorVal, majorVal, step} = this.state;
+    const { minorVal, majorVal, topLim, botLim } = this.state;
     const { title, backHandler } = this.props;
 
     return (
@@ -234,10 +238,11 @@ class PressureBar extends React.Component {
         <div className='Title'>{title}</div>
         <SettingsDialog
           title={title + " settings"}
-          high={minorVal}
-          hihi={majorVal}
-          step={step}
-          handleConfig={this.handleConfig} />
+          high={minorVal} hihi={majorVal}
+          topLim={topLim} botLim={botLim}
+          handleConfig={this.handleConfig}
+          handleConfigLimits={this.handleConfigLimits}
+        />
         {this.state.chartData ? <article className='GraphContainer'> {this.renderBar()} </article> : 'loading...'}
       </div>
     );
