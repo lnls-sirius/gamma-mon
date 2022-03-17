@@ -1,3 +1,4 @@
+
 .PressureBar {
     resize: horizontal;
     overflow: auto;
@@ -5,13 +6,18 @@
 
 .PressureBar .Title{
     position: relative;
-    padding-top: 25px;
-    font-size: 16pt;
+    font-size: 12pt;
 }
 
-.GraphContainer {
+.GraphContainer2 {
+    position: relative;
+    height: 40vh; 
+    padding-top: 5px;
+}
+
+.GraphContainer1 {
     position: relative;
     height: 80vh; 
     padding-left: 25px;
     padding-right: 50px;
-}
+} 

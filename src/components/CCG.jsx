@@ -1,7 +1,7 @@
 import React from 'react';
 
 import PressureBar from './PressureBar';
-import { Grid, Button } from '@material-ui/core';
+import { Grid, Container, Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
 import bo from '../static/BO-CCG.json';
@@ -16,6 +16,11 @@ const STATE = {
     INITIAL: 0, BO: 1, SI: 2, TB: 3, TS: 4, ALL: 5, TB_TS: 6,
     BO_TB_TS: 7, FE: 8, SI_FE: 9, BO_TB_TS_FE: 10
 }
+
+const gridItem = {
+    margin: "8px",
+    border: "1px solid red"
+};
 
 class CCG extends React.Component {
     constructor(props) {
@@ -117,52 +122,82 @@ class CCG extends React.Component {
     renderGraph = () => {
         switch (this.state.content) {
             case STATE.BO:
-                return <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={bo} title='BO - Pressure' {...BO} />
+                return <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={bo} title='BO - Pressure' rows={1} {...BO} />
             case STATE.TB:
-                return <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={tb} title='TB - Pressure'  {...BO} />
+                return <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={tb} title='TB - Pressure' rows={1} {...BO} />
             case STATE.TS:
-                return <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={ts} title='TS - Pressure'  {...BO} />
+                return <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={ts} title='TS - Pressure' rows={1} {...BO} />
             case STATE.SI:
-                return <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={si} title='SI - Pressure'  {...SI} />
+                return <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={si} title='SI - Pressure' rows={1} {...SI} />
             case STATE.FE:
-                return <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={fe} title='FE - Pressure'  {...SI} />
+                return <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={fe} title='FE - Pressure' rows={1} {...SI} />
 
 
             case STATE.TB_TS:
-                return <div style={{ 'display': 'flex', 'flex-direction': 'row', 'flex-wrap': 'wrap' }}>
-                    <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={tb} title='TB - Pressure'  {...BO} />
-                    <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={ts} title='TS - Pressure'  {...BO} />
-                </div>
+                return <Grid container justify='center' flexGrow={1}>
+                    <Grid item md={6} lg={6}>
+                        <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={tb} title='TB - Pressure' rows={1} {...BO} />
+                    </Grid>
+                    <Grid item md={6} lg={6}>
+                        <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={ts} title='TS - Pressure' rows={1} {...BO} />
+                    </Grid>
+                </Grid>
             case STATE.BO_TB_TS:
-                return <div style={{ 'display': 'flex', 'flex-direction': 'row', 'flex-wrap': 'wrap' }}>
-                    <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={bo} title='BO - Pressure' {...BO} />
-                    <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={tb} title='TB - Pressure'  {...BO} />
-                    <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={ts} title='TS - Pressure'  {...BO} />
-                </div>
+                return <Grid container justify='center' flexGrow={1}>
+                    <Grid item md={6} lg={6}>
+                        <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={bo} title='BO - Pressure' rows={1} {...BO} />
+                    </Grid>
+                    <Grid item md={3} lg={3}>
+                        <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={tb} title='TB - Pressure' rows={1} {...BO} />
+                    </Grid>
+                    <Grid item md={3} lg={3}>
+                        <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={ts} title='TS - Pressure' rows={1} {...BO} />
+                    </Grid>
+                </Grid>
             case STATE.BO_TB_TS_FE:
-                return <div style={{ 'display': 'flex', 'flex-direction': 'row', 'flex-wrap': 'wrap' }}>
-                    <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={bo} title='BO - Pressure'  {...BO} />
-                    <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={tb} title='TB - Pressure'  {...BO} />
-                    <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={ts} title='TS - Pressure'  {...BO} />
-                    <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={fe} title='FE - Pressure'  {...SI} />
-                </div>
-
+                return <Grid container justify='center' flexGrow={1}>
+                    <Grid item md={6} lg={6}>
+                        <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={bo} title='BO - Pressure' rows={2} {...BO} />
+                    </Grid>
+                    <Grid item md={3} lg={3}>
+                        <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={tb} title='TB - Pressure' rows={2} {...BO} />
+                    </Grid>
+                    <Grid item md={3} lg={3}>
+                        <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={ts} title='TS - Pressure' rows={2} {...BO} />
+                    </Grid>
+                    <Grid item md={12} lg={12}>
+                        <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={fe} title='FE - Pressure' rows={2} {...SI} />
+                    </Grid>
+                </Grid>
             case STATE.SI_FE:
-                return <div>
-                    <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={si} title='SI - Pressure' {...SI} />
-                    <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={fe} title='FE - Pressure' {...SI} />
-                </div>
+                return <Grid container justify='center' flexGrow={1}>
+                    <Grid item md={12} lg={12}>
+                        <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={si} title='SI - Pressure' rows={2} {...SI} />
+                    </Grid>
+                    <Grid item md={12} lg={12}>
+                        <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={fe} title='FE - Pressure' rows={2} {...SI} />
+                    </Grid>
+                </Grid>
 
 
             case STATE.ALL:
-                return <div style={{ 'display': 'flex', 'flex-direction': 'row', 'flex-wrap': 'wrap' }}>
-                    <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={bo} title='BO - Pressure' />
-                    <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={tb} title='TB - Pressure' />
-                    <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={ts} title='TS - Pressure' />
-                    <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={si} title='SI - Pressure' />
-                    <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={fe} title='FE - Pressure' />
-                </div>
-
+                return <Grid container justify='center'>
+                    <Grid item md={8} lg={8}>
+                        <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={si} title='SI - Pressure'  rows={2} />
+                    </Grid>
+                    <Grid item md={2} lg={2}>
+                        <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={tb} title='TB - Pressure'  rows={2} />
+                    </Grid>
+                    <Grid item md={2} lg={2}>
+                        <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={ts} title='TS - Pressure'  rows={2} />
+                    </Grid>
+                    <Grid item md={8} lg={8}>
+                        <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={fe} title='FE - Pressure'  rows={2} />
+                    </Grid>
+                    <Grid item md={4} lg={4}>
+                        <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={bo} title='BO - Pressure'  rows={2} />
+                    </Grid>
+                </Grid>
             default:
                 if (this.state.tooltipVisible) { this.setState({ tooltipVisible: false }); }
                 return <div></div>

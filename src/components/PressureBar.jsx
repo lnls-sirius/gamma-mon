@@ -10,13 +10,15 @@ import "./PressureBar.css";
 import SettingsDialog from './SettingsDialog';
 
 defaults.global.defaultFontColor = "#FFF";
-defaults.global.defaultFontSize = 16;
+defaults.global.defaultFontSize = 12;
 
 class PressureBar extends React.Component {
   static defaultProps = { title: "A graph" };
 
   constructor(props) {
     super(props);
+
+    this.rows = props.rows
 
     this.state = {
       tooltipText: "",
@@ -30,6 +32,7 @@ class PressureBar extends React.Component {
       topLim: props.topLim ? props.topLim : 1e-6,
     };
 
+    
     this.timer = null;
     this.refreshInterval = 100;
     this.epics = new Epics(this.props.pvs);
@@ -95,8 +98,18 @@ class PressureBar extends React.Component {
 
       const maxVal = (this.valuesMax > majorVal) ? this.valuesMax : majorVal;
 
+      let pvs_label = pvs.map(labelName =>{
+          /*if(labelName.slice(0,4) != "Calc"){
+            return labelName.slice(3,-13)
+          }else{
+            return labelName.slice(0,-13)
+          }*/
+          return labelName.slice(0,-13)
+        }
+      );
+
       let data = {
-        labels: pvs,
+        labels: pvs_label,
         datasets: [
           {
             label: 'MKS - Cold Cathode',
@@ -148,7 +161,7 @@ class PressureBar extends React.Component {
         plugins={[ChartDataLabels]}
         options={{
           plugins: {
-            datalabels: { rotation: 270, font: { weight: "bold" } },
+            datalabels: { rotation: 270, font: { weight: "bold"}},
           },
           tooltips: { mode: 'index', enabled: false, custom: customTooltipCallback },
           maintainAspectRatio: false,
@@ -243,7 +256,7 @@ class PressureBar extends React.Component {
           handleConfig={this.handleConfig}
           handleConfigLimits={this.handleConfigLimits}
         />
-        {this.state.chartData ? <article className='GraphContainer'> {this.renderBar()} </article> : 'loading...'}
+        {this.state.chartData ? <article className={this.rows>1?'GraphContainer2':'GraphContainer1'}> {this.renderBar()} </article> : 'loading...'}
       </div>
     );
   }
