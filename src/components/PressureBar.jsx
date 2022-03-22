@@ -99,12 +99,9 @@ class PressureBar extends React.Component {
       const maxVal = (this.valuesMax > majorVal) ? this.valuesMax : majorVal;
 
       let pvs_label = pvs.map(labelName =>{
-          /*if(labelName.slice(0,4) != "Calc"){
-            return labelName.slice(3,-13)
-          }else{
-            return labelName.slice(0,-13)
-          }*/
-          return labelName.slice(0,-13)
+          let label = labelName.slice(0,-13)
+          label = label.replace("VA-CCG-", "")
+          return label
         }
       );
 

@@ -10,13 +10,11 @@
 }
 
 .GraphContainer2 {
-    position: relative;
     height: 40vh; 
     padding-top: 5px;
 }
 
 .GraphContainer1 {
-    position: relative;
     height: 80vh; 
     padding-left: 25px;
     padding-right: 50px;

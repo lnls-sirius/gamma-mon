@@ -135,19 +135,19 @@ class CCG extends React.Component {
 
             case STATE.TB_TS:
                 return <Grid container justify='center' flexGrow={1}>
-                    <Grid item md={6} lg={6}>
+                    <Grid item md={5} lg={5}>
                         <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={tb} title='TB - Pressure' rows={1} {...BO} />
                     </Grid>
-                    <Grid item md={6} lg={6}>
+                    <Grid item md={7} lg={7}>
                         <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={ts} title='TS - Pressure' rows={1} {...BO} />
                     </Grid>
                 </Grid>
             case STATE.BO_TB_TS:
                 return <Grid container justify='center' flexGrow={1}>
-                    <Grid item md={6} lg={6}>
+                    <Grid item md={7} lg={7}>
                         <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={bo} title='BO - Pressure' rows={1} {...BO} />
                     </Grid>
-                    <Grid item md={3} lg={3}>
+                    <Grid item md={2} lg={2}>
                         <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={tb} title='TB - Pressure' rows={1} {...BO} />
                     </Grid>
                     <Grid item md={3} lg={3}>
@@ -156,10 +156,10 @@ class CCG extends React.Component {
                 </Grid>
             case STATE.BO_TB_TS_FE:
                 return <Grid container justify='center' flexGrow={1}>
-                    <Grid item md={6} lg={6}>
+                    <Grid item md={7} lg={7}>
                         <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={bo} title='BO - Pressure' rows={2} {...BO} />
                     </Grid>
-                    <Grid item md={3} lg={3}>
+                    <Grid item md={2} lg={2}>
                         <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={tb} title='TB - Pressure' rows={2} {...BO} />
                     </Grid>
                     <Grid item md={3} lg={3}>
@@ -182,14 +182,18 @@ class CCG extends React.Component {
 
             case STATE.ALL:
                 return <Grid container justify='center'>
-                    <Grid item md={8} lg={8}>
+                    <Grid item md={10} lg={10}>
                         <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={si} title='SI - Pressure'  rows={2} />
                     </Grid>
                     <Grid item md={2} lg={2}>
-                        <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={tb} title='TB - Pressure'  rows={2} />
-                    </Grid>
-                    <Grid item md={2} lg={2}>
-                        <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={ts} title='TS - Pressure'  rows={2} />
+                        <Grid container justify='center'>
+                            <Grid item md={5} lg={5}>
+                                <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={tb} title='TB - Pressure'  rows={2} />                            
+                            </Grid>
+                            <Grid item md={7} lg={7}>
+                                <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={ts} title='TS - Pressure'  rows={2} />
+                            </Grid>
+                        </Grid>
                     </Grid>
                     <Grid item md={8} lg={8}>
                         <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={fe} title='FE - Pressure'  rows={2} />
