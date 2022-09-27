@@ -4,6 +4,7 @@ import PressureBar from './PressureBar';
 import { Grid, Container, Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
+import li from '../static/LI-CCG.json';
 import bo from '../static/BO-CCG.json';
 import si from '../static/SI-CCG.json';
 import fe from '../static/FE-CCG.json';
@@ -14,7 +15,7 @@ import { SI, BO, BASE_URL } from '../utils/consts';
 
 const STATE = {
     INITIAL: 0, BO: 1, SI: 2, TB: 3, TS: 4, ALL: 5, TB_TS: 6,
-    BO_TB_TS: 7, FE: 8, SI_FE: 9, BO_TB_TS_FE: 10
+    BO_TB_TS: 7, FE: 8, SI_FE: 9, BO_TB_TS_FE: 10, LI: 11
 }
 
 const gridItem = {
@@ -53,16 +54,19 @@ class CCG extends React.Component {
                 <div style={{ 'margin-bottom': '15px' }} className='SubTitle'>Cold Cathode Gauge</div>
                 <Grid container justify='center' flexGrow={1}>
                     <Grid item style={{ 'margin': '4px' }}>
-                        <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.BO })}>BO</Button><br />
-                    </Grid>
-                    <Grid item style={{ 'margin': '4px' }}>
-                        <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.SI })}>SI</Button><br />
+                        <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.LI })}>LI</Button><br />
                     </Grid>
                     <Grid item style={{ 'margin': '4px' }}>
                         <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.TB })}>TB</Button><br />
                     </Grid>
                     <Grid item style={{ 'margin': '4px' }}>
+                        <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.BO })}>BO</Button><br />
+                    </Grid>
+                    <Grid item style={{ 'margin': '4px' }}>
                         <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.TS })}>TS</Button><br />
+                    </Grid>
+                    <Grid item style={{ 'margin': '4px' }}>
+                        <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.SI })}>SI</Button><br />
                     </Grid>
                     <Grid item style={{ 'margin': '4px' }}>
                         <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.FE })}>FE</Button><br />
@@ -73,10 +77,10 @@ class CCG extends React.Component {
                         <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.TB_TS })}>TB & TS</Button><br />
                     </Grid>
                     <Grid item style={{ 'margin': '4px' }}>
-                        <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.BO_TB_TS })}>BO, TB & TS</Button><br />
+                        <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.BO_TB_TS })}>TB, BO & TS</Button><br />
                     </Grid>
                     <Grid item style={{ 'margin': '4px' }}>
-                        <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.BO_TB_TS_FE })}>BO, TB, TS & FE</Button><br />
+                        <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.BO_TB_TS_FE })}>TB, BO, TS & FE</Button><br />
                     </Grid>
                     <Grid item style={{ 'margin': '4px' }}>
                         <Button variant="contained" color="primary" onClick={() => this.setState({ content: STATE.SI_FE })}>SI & FE</Button><br />
@@ -121,6 +125,8 @@ class CCG extends React.Component {
 
     renderGraph = () => {
         switch (this.state.content) {
+            case STATE.LI:
+                return <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={li} title='LI - Pressure' rows={1} />
             case STATE.BO:
                 return <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={bo} title='BO - Pressure' rows={1} {...BO} />
             case STATE.TB:
@@ -144,11 +150,11 @@ class CCG extends React.Component {
                 </Grid>
             case STATE.BO_TB_TS:
                 return <Grid container justify='center' flexGrow={1}>
-                    <Grid item md={7} lg={7}>
-                        <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={bo} title='BO - Pressure' rows={1} {...BO} />
-                    </Grid>
                     <Grid item md={2} lg={2}>
                         <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={tb} title='TB - Pressure' rows={1} {...BO} />
+                    </Grid>
+                    <Grid item md={7} lg={7}>
+                        <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={bo} title='BO - Pressure' rows={1} {...BO} />
                     </Grid>
                     <Grid item md={3} lg={3}>
                         <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={ts} title='TS - Pressure' rows={1} {...BO} />
@@ -156,11 +162,11 @@ class CCG extends React.Component {
                 </Grid>
             case STATE.BO_TB_TS_FE:
                 return <Grid container justify='center' flexGrow={1}>
-                    <Grid item md={7} lg={7}>
-                        <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={bo} title='BO - Pressure' rows={2} {...BO} />
-                    </Grid>
                     <Grid item md={2} lg={2}>
                         <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={tb} title='TB - Pressure' rows={2} {...BO} />
+                    </Grid>
+                    <Grid item md={7} lg={7}>
+                        <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={bo} title='BO - Pressure' rows={2} {...BO} />
                     </Grid>
                     <Grid item md={3} lg={3}>
                         <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={ts} title='TS - Pressure' rows={2} {...BO} />
