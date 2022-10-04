@@ -110,7 +110,7 @@ class PressureBar extends React.Component {
           let value = Number(ids[0]) * 2;
           if (Number(ids[1]) == 1)
             value = value - 1;
-          return "CCG" + value.toString()
+          return "LI-" + value.toString()
         }
       );
 

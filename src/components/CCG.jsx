@@ -11,7 +11,7 @@ import fe from '../static/FE-CCG.json';
 import tb from '../static/TB-CCG.json';
 import ts from '../static/TS-CCG.json';
 
-import { SI, BO, BASE_URL } from '../utils/consts';
+import { SI, BO, LI, BASE_URL } from '../utils/consts';
 
 const STATE = {
     INITIAL: 0, BO: 1, SI: 2, TB: 3, TS: 4, ALL: 5, TB_TS: 6,
@@ -126,7 +126,7 @@ class CCG extends React.Component {
     renderGraph = () => {
         switch (this.state.content) {
             case STATE.LI:
-                return <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={li} title='LI - Pressure' rows={1} />
+                return <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={li} title='LI - Pressure' rows={1} {...LI} />
             case STATE.BO:
                 return <PressureBar customTooltipCallback={this.customTooltipCallback} pvs={bo} title='BO - Pressure' rows={1} {...BO} />
             case STATE.TB:
