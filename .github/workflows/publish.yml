@@ -5,7 +5,7 @@ name: Gamma Monitor CD
 #     types: [created]
 on:
   pull_request:
-    types: master
+    branch: master
 
 jobs:
   deploy:
