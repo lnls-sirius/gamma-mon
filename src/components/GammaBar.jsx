@@ -2,7 +2,6 @@
 import React from 'react';
 import { Bar, defaults } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { Button } from '@material-ui/core';
 
 import { color } from '../utils/Colors';
 import Epics from '../utils/Epics';
