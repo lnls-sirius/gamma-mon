@@ -47,8 +47,17 @@ class GammaBar extends React.Component {
     const { minorVal, majorVal } = this.state;
     const { pvs } = this.props;
 
-    this.values = pvs.map(pv => { return this.epics.pvData[pv].value.toExponential(2); });
-    this.currentvalue = this.epicscurrent.pvData['SI-13C4:DI-DCCT:Current-Mon'].value.toExponential(2);
+    this.values = pvs.map(pv => {
+      try{
+        return this.epics.pvData[pv].value.toExponential(2);
+      }catch(e){
+        return this.epics.pvData[pv].value;
+      }});
+    try{
+      this.currentvalue = this.epicscurrent.pvData['SI-13C4:DI-DCCT:Current-Mon'].value.toExponential(2);
+    }catch(e){
+      this.currentvalue = 0;
+    }
     this.valuesMax = Math.max(...this.values);
 
     this.alarms.bg = this.values.map(value => {
