@@ -46,7 +46,12 @@ class PressureBar extends React.Component {
     const { minorVal, majorVal } = this.state;
     const { pvs } = this.props;
 
-    this.values = pvs.map(pv => { return this.epics.pvData[pv].value; });
+    this.values = pvs.map(pv => {
+      try{
+        return this.epics.pvData[pv].value;
+      }catch(e){
+        return 0;
+      }});
     this.valuesMax = Math.max(...this.values);
 
     this.alarms.bg = this.values.map(value => {
