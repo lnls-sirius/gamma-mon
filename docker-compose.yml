@@ -1,9 +1,17 @@
 version: '3.8'
 
 services:
-  vacs:
+  gamma:
     container_name: 'gamma-mon'
-    image: 'ghcr.io/lnls-sirius/gamma-mon:1.0.1'
+    image: 'ghcr.io/lnls-sirius/gamma-mon:1.0.2'
+    build:
+      context: .
+    ports:
+      - 80:80
+
+  gamma-latest:
+    container_name: 'gamma-mon'
+    image: 'ghcr.io/lnls-sirius/gamma-mon'
     build:
       context: .
     ports:
